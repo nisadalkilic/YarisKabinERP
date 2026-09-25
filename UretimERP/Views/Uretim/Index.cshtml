@@ -1,0 +1,250 @@
+﻿@model IEnumerable<UretimERP.Models.UretimEmriListeViewModel>
+
+@{
+    ViewBag.Title = "Üretim";
+}
+
+<div class="page-header">
+    <div>
+        <h2>Üretim Emirleri</h2>
+        <p>Planlanan ve devam eden üretim süreçlerini takip edin.</p>
+    </div>
+</div>
+<div class="production-summary">
+
+    <div class="summary-card">
+        <span>Toplam Üretim Emri</span>
+        <strong>@ViewBag.ToplamUretimEmri</strong>
+        <small>Tüm üretim emirleri</small>
+    </div>
+
+    <div class="summary-card">
+        <span>Planlanan</span>
+        <strong>@ViewBag.Planlanan</strong>
+        <small>Üretime başlamayı bekliyor</small>
+    </div>
+
+    <div class="summary-card">
+        <span>Üretimde</span>
+        <strong>@ViewBag.Uretimde</strong>
+        <small>Aktif üretim sürecinde</small>
+    </div>
+
+    <div class="summary-card">
+        <span>Tamamlanan</span>
+        <strong>@ViewBag.Tamamlanan</strong>
+        <small>Üretimi tamamlandı</small>
+    </div>
+
+</div>
+
+<div class="production-card">
+
+    <table class="production-table">
+        <thead>
+            <tr>
+                <th>Üretim Emri</th>
+                <th>Ürün Kodu</th>
+                <th>Ürün</th>
+                <th>Planlanan Miktar</th>
+                <th>Planlanan Başlangıç</th>
+                <th>Durum</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var uretim in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@uretim.UretimEmriNo</strong>
+                        </td>
+
+                        <td>@uretim.UrunKodu</td>
+
+                        <td>@uretim.UrunAdi</td>
+
+                        <td>
+                            <strong>@uretim.PlanlananMiktar</strong>
+                        </td>
+
+                        <td>
+                            @if (uretim.PlanlananBaslangicTarihi.HasValue)
+                            {
+                                @uretim.PlanlananBaslangicTarihi.Value.ToString("dd.MM.yyyy")
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+
+                        <td>
+                            <span class="production-status">
+                                @uretim.Durum
+                            </span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Detay", "Uretim", new { id = uretim.UretimEmriID })"
+                               class="detail-button">
+                                Detay →
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="empty-message">
+                        Henüz üretim emri bulunmuyor.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .page-header p {
+            margin: 5px 0 0;
+            font-size: 11px;
+            color: #8a928c;
+        }
+
+    .production-card {
+        background: white;
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .production-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .production-table th {
+            text-align: left;
+            padding: 11px;
+            font-size: 10px;
+            color: #8a928c;
+            border-bottom: 1px solid #edf0ed;
+        }
+
+        .production-table td {
+            padding: 14px 11px;
+            font-size: 11px;
+            color: #3f4942;
+            border-bottom: 1px solid #f0f2f0;
+        }
+
+    .production-status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #eef5f0;
+        color: #42604a;
+        font-size: 9px;
+        font-weight: 600;
+    }
+
+    .empty-message {
+        text-align: center !important;
+        padding: 30px !important;
+        color: #929a94 !important;
+    }
+    .production-summary {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .summary-card {
+        background: white;
+        border-radius: 14px;
+        padding: 18px;
+    }
+
+        .summary-card span {
+            display: block;
+            font-size: 10px;
+            color: #8a928c;
+            margin-bottom: 9px;
+        }
+
+        .summary-card strong {
+            display: block;
+            font-size: 22px;
+            color: #26342b;
+            margin-bottom: 5px;
+        }
+
+        .summary-card small {
+            font-size: 9px;
+            color: #a0a7a2;
+        }
+    .detail-button {
+        display: inline-block;
+        padding: 7px 11px;
+        border: 1px solid #dfe8e1;
+        border-radius: 8px;
+        background: #f7faf8;
+        color: #315c3d;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+        .detail-button:hover {
+            background: #edf6ef;
+            color: #174b2d;
+        }
+    .purchase-summary {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .summary-card {
+        background: white;
+        border-radius: 14px;
+        padding: 18px;
+    }
+
+        .summary-card span {
+            display: block;
+            font-size: 10px;
+            color: #8a928c;
+            margin-bottom: 9px;
+        }
+
+        .summary-card strong {
+            display: block;
+            font-size: 22px;
+            color: #26342b;
+            margin-bottom: 5px;
+        }
+
+        .summary-card small {
+            font-size: 9px;
+            color: #a0a7a2;
+        }
+</style>

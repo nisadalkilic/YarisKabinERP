@@ -1,0 +1,154 @@
+﻿@model IEnumerable<UretimERP.Models.SistemAyarlari>
+
+@{
+    ViewBag.Title = "Ayarlar";
+}
+
+<div class="settings-page">
+
+    <div class="settings-header">
+        <div>
+            <h2>Sistem Ayarları</h2>
+            <p>Uygulamanın genel sistem ayarlarını görüntüleyin.</p>
+        </div>
+    </div>
+
+    <div class="settings-card">
+
+        <div class="settings-card-header">
+            <div>
+                <h3>Ayar Listesi</h3>
+                <p>Sistemde tanımlı yapılandırma değerleri.</p>
+            </div>
+        </div>
+
+        <table class="settings-table">
+
+            <thead>
+                <tr>
+                    <th>Ayar Kodu</th>
+                    <th>Değer</th>
+                    <th>Açıklama</th>
+                    <th>Son Güncelleme</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var ayar in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@ayar.AyarKodu</strong>
+                            </td>
+
+                            <td>
+                                @ayar.AyarDegeri
+                            </td>
+
+                            <td>
+                                @(string.IsNullOrWhiteSpace(ayar.Aciklama)
+                                    ? "-"
+                                    : ayar.Aciklama)
+                            </td>
+
+                            <td>
+                                @ayar.GuncellemeTarihi.ToString("dd.MM.yyyy HH:mm")
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="empty-settings">
+                            Henüz sistem ayarı tanımlanmamış.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<style>
+
+    .settings-page {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .settings-header h2 {
+        margin: 0;
+        font-size: 26px;
+        color: #1f2937;
+    }
+
+    .settings-header p {
+        margin: 6px 0 0;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .settings-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .settings-card-header {
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+        .settings-card-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #1f2937;
+        }
+
+        .settings-card-header p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+    .settings-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .settings-table th {
+            padding: 13px 16px;
+            text-align: left;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .settings-table td {
+            padding: 14px 16px;
+            border-top: 1px solid #f3f4f6;
+            color: #4b5563;
+            font-size: 13px;
+        }
+
+            .settings-table td strong {
+                color: #1f2937;
+            }
+
+    .empty-settings {
+        padding: 35px !important;
+        text-align: center;
+        color: #9ca3af !important;
+    }
+</style>

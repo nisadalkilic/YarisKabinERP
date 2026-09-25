@@ -1,0 +1,319 @@
+﻿
+@model IEnumerable<UretimERP.Models.StokListeViewModel>
+
+@{
+    ViewBag.Title = "Stok & Depolar";
+}
+
+<div class="page-header">
+    <div>
+        <h2>Stok & Depolar</h2>
+        <p>Depolardaki mevcut ve kullanılabilir stokları takip edin.</p>
+    </div>
+</div>
+<form method="get"
+      action="@Url.Action("Index", "Stok")"
+      class="stock-search">
+
+    <input type="text"
+           name="ara"
+           value="@ViewBag.Ara"
+           placeholder="Ürün kodu, ürün adı veya depo ara..." />
+
+    <select name="depoId">
+        <option value="">Tüm Depolar</option>
+
+        @foreach (var depo in ViewBag.Depolar)
+        {
+            <option value="@depo.DepoID"
+                    selected="@(ViewBag.SeciliDepoId != null &&
+                                ViewBag.SeciliDepoId == depo.DepoID)">
+                @depo.DepoAdi
+            </option>
+        }
+    </select>
+
+    <select name="durum">
+        <option value="">Tüm Durumlar</option>
+
+        <option value="kritik"
+                selected="@(ViewBag.SeciliDurum == "kritik")">
+            Kritik Stok
+        </option>
+
+        <option value="normal"
+                selected="@(ViewBag.SeciliDurum == "normal")">
+            Normal Stok
+        </option>
+    </select>
+    <button type="submit">Ara</button>
+
+    @if (!string.IsNullOrWhiteSpace(ViewBag.Ara as string) ||
+      ViewBag.SeciliDepoId != null ||
+      !string.IsNullOrWhiteSpace(ViewBag.SeciliDurum as string))
+    {
+        <a href="@Url.Action("Index", "Stok")">Temizle</a>
+    }
+
+</form>
+@if (!string.IsNullOrWhiteSpace(ViewBag.Ara as string))
+{
+    <div class="search-result-info">
+        "<strong>@ViewBag.Ara</strong>" araması için
+        <strong>@ViewBag.BulunanKayit</strong> kayıt bulundu.
+    </div>
+}
+<div class="stock-summary">
+
+    <div class="summary-card">
+        <span class="summary-title">Toplam Stok Kaydı</span>
+        <strong>@ViewBag.ToplamStokKaydi</strong>
+        <small>Sistemdeki stok kayıtları</small>
+    </div>
+
+    <div class="summary-card">
+        <span class="summary-title">Normal Stok</span>
+        <strong>@ViewBag.NormalStokSayisi</strong>
+        <small>Minimum seviyenin üzerinde</small>
+    </div>
+
+    <div class="summary-card">
+        <span class="summary-title">Kritik Stok</span>
+        <strong>@ViewBag.KritikStokSayisi</strong>
+        <small>Kontrol gerektiren stoklar</small>
+    </div>
+
+</div>
+<div class="stock-card">
+    <table class="stock-table">
+        <thead>
+            <tr>
+                <th>Ürün Kodu</th>
+                <th>Ürün Adı</th>
+                <th>Depo</th>
+                <th>Fiziksel Stok</th>
+                <th>Rezerve</th>
+                <th>Kullanılabilir</th>
+                <th>Minimum</th>
+                <th>Durum</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var stok in Model)
+            {
+                var kritikMi = stok.KullanilabilirStok <= stok.MinimumStok;
+
+                <tr>
+                    <td><strong>@stok.UrunKodu</strong></td>
+
+                    <td>@stok.UrunAdi</td>
+
+                    <td>@stok.DepoAdi</td>
+
+                    <td>@stok.FizikselStok</td>
+
+                    <td>@stok.RezerveStok</td>
+
+                    <td><strong>@stok.KullanilabilirStok</strong></td>
+
+                    <td>@stok.MinimumStok</td>
+
+                    <td>
+                        @if (kritikMi)
+                        {
+                            <span class="status critical">Kritik</span>
+                        }
+                        else
+                        {
+                            <span class="status normal">Normal</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Detay", "Stok", new { id = stok.StokID })"
+                           class="detail-button">
+                            Detay →
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .page-header {
+        margin-bottom: 22px;
+    }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #202520;
+        }
+
+        .page-header p {
+            margin-top: 6px;
+            color: #8b938d;
+            font-size: 13px;
+        }
+
+    .stock-card {
+        background: white;
+        border: 1px solid #edf0ed;
+        border-radius: 14px;
+        padding: 20px;
+        overflow-x: auto;
+    }
+
+    .stock-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .stock-table th {
+            text-align: left;
+            padding: 12px;
+            font-size: 11px;
+            color: #929a94;
+            border-bottom: 1px solid #edf0ed;
+        }
+
+        .stock-table td {
+            padding: 14px 12px;
+            font-size: 12px;
+            color: #4c544e;
+            border-bottom: 1px solid #f2f4f2;
+        }
+
+    .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+        .status.critical {
+            background: #fff1f1;
+            color: #d65c5c;
+        }
+
+        .status.normal {
+            background: #edf9ef;
+            color: #469b58;
+        }
+
+    .stock-summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .summary-card {
+        background: white;
+        border: 1px solid #edf0ed;
+        border-radius: 14px;
+        padding: 18px 20px;
+    }
+
+    .summary-title {
+        display: block;
+        font-size: 11px;
+        color: #8d958f;
+        margin-bottom: 12px;
+    }
+
+    .summary-card strong {
+        display: block;
+        font-size: 25px;
+        color: #202520;
+        margin-bottom: 5px;
+    }
+
+    .summary-card small {
+        color: #9ba29d;
+        font-size: 10px;
+    }
+
+    .stock-search {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+        .stock-search input {
+            flex: 1;
+            padding: 11px 14px;
+            border: 1px solid #e5e9e6;
+            border-radius: 9px;
+            outline: none;
+            font-size: 12px;
+        }
+
+            .stock-search input:focus {
+                border-color: #83d993;
+            }
+
+        .stock-search button,
+        .stock-search a {
+            border: none;
+            border-radius: 9px;
+            padding: 11px 18px;
+            font-size: 11px;
+            text-decoration: none;
+        }
+
+        .stock-search button {
+            background: #174b2d;
+            color: white;
+            cursor: pointer;
+        }
+
+        .stock-search a {
+            background: white;
+            color: #69716b;
+            border: 1px solid #e5e9e6;
+        }
+    .search-result-info {
+        margin: -5px 0 18px 2px;
+        font-size: 11px;
+        color: #7f8881;
+    }
+
+        .search-result-info strong {
+            color: #315c3d;
+        }
+    .stock-search select {
+        min-width: 180px;
+        padding: 11px 14px;
+        border: 1px solid #e5e9e6;
+        border-radius: 9px;
+        outline: none;
+        background: white;
+        font-size: 12px;
+        color: #4d5650;
+    }
+
+        .stock-search select:focus {
+            border-color: #83d993;
+        }
+    .detail-button {
+        display: inline-block;
+        padding: 7px 11px;
+        border: 1px solid #dfe8e1;
+        border-radius: 8px;
+        background: #f7faf8;
+        color: #315c3d;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+        .detail-button:hover {
+            background: #edf6ef;
+            color: #174b2d;
+        }
+</style>

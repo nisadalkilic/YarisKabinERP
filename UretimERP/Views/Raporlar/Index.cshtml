@@ -1,0 +1,654 @@
+﻿@using UretimERP.Models
+
+@{
+    ViewBag.Title = "Raporlar";
+
+    var siparisDurumlari =
+        ViewBag.SiparisDurumlari as List<SiparisDurumRaporViewModel>;
+
+    var uretimDurumlari =
+        ViewBag.UretimDurumlari as List<UretimDurumRaporViewModel>;
+
+    var kritikStoklar =
+    ViewBag.KritikStoklar as List<KritikStokRaporViewModel>;
+
+    var satinAlmaDurumlari =
+    ViewBag.SatinAlmaDurumlari as List<SatinAlmaDurumRaporViewModel>;
+
+    var finansOzeti =
+    ViewBag.FinansOzeti as FinansOzetViewModel;
+
+    var depoStokDagilimi =
+    ViewBag.DepoStokDagilimi as List<DepoStokRaporViewModel>;
+}
+<div class="reports-page">
+
+    <div class="reports-header">
+        <div>
+            <h2>Raporlar</h2>
+            <p>Üretim, sipariş, stok ve finans verilerinin genel analizi.</p>
+        </div>
+    </div>
+
+    <div class="report-cards">
+
+        <div class="report-card">
+            <div class="report-card-title">Toplam Ürün</div>
+            <div class="report-card-value">@ViewBag.ToplamUrun</div>
+            <div class="report-card-description">
+                Sistemde kayıtlı ürün sayısı
+            </div>
+        </div>
+
+        <div class="report-card">
+            <div class="report-card-title">Toplam Sipariş</div>
+            <div class="report-card-value">@ViewBag.ToplamSiparis</div>
+            <div class="report-card-description">
+                Sistemdeki toplam müşteri siparişi
+            </div>
+        </div>
+
+        <div class="report-card">
+            <div class="report-card-title">Üretim Emirleri</div>
+            <div class="report-card-value">@ViewBag.ToplamUretimEmri</div>
+            <div class="report-card-description">
+                Oluşturulan toplam üretim emri
+            </div>
+        </div>
+
+        <div class="report-card">
+            <div class="report-card-title">Tedarikçiler</div>
+            <div class="report-card-value">@ViewBag.ToplamTedarikci</div>
+            <div class="report-card-description">
+                Sistemde kayıtlı tedarikçi sayısı
+            </div>
+        </div>
+
+    </div>
+
+    <div class="report-section">
+
+        <div class="report-section-header">
+            <div>
+                <h3>Analiz Merkezi</h3>
+                <p>
+                    Sipariş, üretim, stok ve finans verilerinin
+                    raporları bu alanda görüntülenecek.
+                </p>
+            </div>
+        </div>
+
+        <div class="report-analysis">
+
+            <div class="analysis-title">
+                <div>
+                    <h4>Sipariş Durum Dağılımı</h4>
+                    <p>Siparişlerin mevcut durumlara göre dağılımı.</p>
+                </div>
+            </div>
+            @if (siparisDurumlari != null && siparisDurumlari.Any())
+            {
+                var toplamSiparis = siparisDurumlari.Sum(x => x.Adet);
+
+                foreach (var durum in siparisDurumlari)
+                {
+                    decimal oran = 0;
+
+                    if (toplamSiparis > 0)
+                    {
+                        oran = ((decimal)durum.Adet / toplamSiparis) * 100;
+                    }
+
+                    <div class="status-report-row">
+
+                        <div class="status-report-info">
+                            <span>@durum.Durum</span>
+                            <strong>@durum.Adet</strong>
+                        </div>
+
+                        <div class="status-progress">
+                            <div class="status-progress-value"
+                                 style="width:@(oran.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%");">
+                            </div>
+                        </div>
+
+                        <div class="status-percentage">
+                            %@oran.ToString("N1")
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-report">
+                    Henüz raporlanabilecek sipariş bulunmuyor.
+                </div>
+            }
+
+
+        </div>
+
+    </div>
+
+
+    <div class="report-analysis">
+
+        <div class="analysis-title">
+            <div>
+                <h4>Üretim Durum Dağılımı</h4>
+                <p>Üretim emirlerinin mevcut durumlara göre dağılımı.</p>
+            </div>
+        </div>
+
+        @if (uretimDurumlari != null && uretimDurumlari.Any())
+        {
+            var toplamUretim = uretimDurumlari.Sum(x => x.Adet);
+
+            foreach (var durum in uretimDurumlari)
+            {
+                decimal oran = 0;
+
+                if (toplamUretim > 0)
+                {
+                    oran = ((decimal)durum.Adet / toplamUretim) * 100;
+                }
+
+                <div class="status-report-row">
+
+                    <div class="status-report-info">
+                        <span>@durum.Durum</span>
+                        <strong>@durum.Adet</strong>
+                    </div>
+
+                    <div class="status-progress">
+                        <div class="status-progress-value"
+                             style="width:@(oran.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%");">
+                        </div>
+                    </div>
+
+                    <div class="status-percentage">
+                        %@oran.ToString("N1")
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-report">
+                Henüz raporlanabilecek üretim emri bulunmuyor.
+            </div>
+        }
+
+    </div>
+    <div class="report-analysis">
+
+        <div class="analysis-title">
+            <div>
+                <h4>Kritik Stok Analizi</h4>
+                <p>Minimum stok seviyesine ulaşan veya altına düşen ürünler.</p>
+            </div>
+        </div>
+
+        @if (kritikStoklar != null && kritikStoklar.Any())
+        {
+            <div class="critical-stock-table">
+
+                <div class="critical-stock-head">
+                    <span>Ürün</span>
+                    <span>Kullanılabilir</span>
+                    <span>Minimum</span>
+                    <span>Eksik</span>
+                    <span>Durum</span>
+                </div>
+
+                @foreach (var stok in kritikStoklar)
+                {
+                    <div class="critical-stock-row">
+
+                        <div>
+                            <strong>@stok.UrunAdi</strong>
+                            <small>@stok.UrunKodu</small>
+                        </div>
+
+                        <span>
+                            @stok.KullanilabilirStok.ToString("N2")
+                        </span>
+
+                        <span>
+                            @stok.MinimumStok.ToString("N2")
+                        </span>
+
+                        <span>
+                            @stok.EksikMiktar.ToString("N2")
+                        </span>
+
+                        <span class="critical-badge">
+                            Kritik
+                        </span>
+
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="empty-report">
+                Kritik stok seviyesinde ürün bulunmuyor.
+            </div>
+        }
+
+    </div>
+    <div class="report-analysis">
+
+        <div class="analysis-title">
+            <div>
+                <h4>Satın Alma Durum Dağılımı</h4>
+                <p>Satın alma siparişlerinin mevcut durumlara göre dağılımı.</p>
+            </div>
+        </div>
+
+        @if (satinAlmaDurumlari != null && satinAlmaDurumlari.Any())
+        {
+            var toplamSatinAlma = satinAlmaDurumlari.Sum(x => x.Adet);
+
+            foreach (var durum in satinAlmaDurumlari)
+            {
+                decimal oran = 0;
+
+                if (toplamSatinAlma > 0)
+                {
+                    oran = ((decimal)durum.Adet / toplamSatinAlma) * 100;
+                }
+
+                <div class="status-report-row">
+
+                    <div class="status-report-info">
+                        <span>@durum.Durum</span>
+                        <strong>@durum.Adet</strong>
+                    </div>
+
+                    <div class="status-progress">
+                        <div class="status-progress-value"
+                             style="width:@(oran.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%");">
+                        </div>
+                    </div>
+
+                    <div class="status-percentage">
+                        %@oran.ToString("N1")
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-report">
+                Henüz raporlanabilecek satın alma siparişi bulunmuyor.
+            </div>
+        }
+
+    </div>
+    <div class="report-analysis">
+
+        <div class="analysis-title">
+            <div>
+                <h4>Finansal Özet</h4>
+                <p>İşletmenin temel finansal hareketlerinin genel görünümü.</p>
+            </div>
+        </div>
+
+        @if (finansOzeti != null)
+        {
+            <div class="finance-report-grid">
+
+                <div class="finance-report-item">
+                    <span>Müşteri Alacakları</span>
+                    <strong>@finansOzeti.ToplamAlacak.ToString("N2")</strong>
+                </div>
+
+                <div class="finance-report-item">
+                    <span>Müşteri Tahsilatları</span>
+                    <strong>@finansOzeti.ToplamTahsilat.ToString("N2")</strong>
+                </div>
+
+                <div class="finance-report-item">
+                    <span>Tedarikçi Borçları</span>
+                    <strong>@finansOzeti.ToplamTedarikciBorcu.ToString("N2")</strong>
+                </div>
+
+                <div class="finance-report-item">
+                    <span>Tedarikçi Ödemeleri</span>
+                    <strong>@finansOzeti.ToplamTedarikciOdeme.ToString("N2")</strong>
+                </div>
+
+                <div class="finance-report-item">
+                    <span>Genel Giderler</span>
+                    <strong>@finansOzeti.ToplamGenelGider.ToString("N2")</strong>
+                </div>
+
+                <div class="finance-report-item">
+                    <span>Üretim Maliyetleri</span>
+                    <strong>@finansOzeti.ToplamUretimMaliyeti.ToString("N2")</strong>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="empty-report">
+                Finansal özet oluşturulamadı.
+            </div>
+        }
+
+    </div>
+    <div class="report-analysis">
+
+        <div class="analysis-title">
+            <div>
+                <h4>Depo Stok Dağılımı</h4>
+                <p>Aktif depolardaki stok kayıtlarının dağılımı.</p>
+            </div>
+        </div>
+
+        @if (depoStokDagilimi != null && depoStokDagilimi.Any())
+        {
+            var toplamStokKaydi = depoStokDagilimi.Sum(x => x.StokKaydiSayisi);
+
+            foreach (var depo in depoStokDagilimi)
+            {
+                decimal oran = 0;
+
+                if (toplamStokKaydi > 0)
+                {
+                    oran = ((decimal)depo.StokKaydiSayisi / toplamStokKaydi) * 100;
+                }
+
+                <div class="status-report-row">
+
+                    <div class="status-report-info">
+                        <span>@depo.DepoAdi</span>
+                        <strong>@depo.StokKaydiSayisi</strong>
+                    </div>
+
+                    <div class="status-progress">
+                        <div class="status-progress-value"
+                             style="width:@(oran.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%");">
+                        </div>
+                    </div>
+
+                    <div class="status-percentage">
+                        %@oran.ToString("N1")
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-report">
+                Raporlanabilecek aktif depo bulunmuyor.
+            </div>
+        }
+
+    </div>
+</div>
+
+
+<style>
+
+    .reports-page {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+    }
+
+    .reports-header h2 {
+        margin: 0;
+        font-size: 26px;
+        color: #1f2937;
+    }
+
+    .reports-header p {
+        margin: 6px 0 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .report-cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .report-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .report-card-title {
+        font-size: 13px;
+        color: #6b7280;
+        margin-bottom: 10px;
+    }
+
+    .report-card-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .report-card-description {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #9ca3af;
+    }
+
+    .report-section {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .report-section-header h3 {
+        margin: 0;
+        color: #1f2937;
+        font-size: 17px;
+    }
+
+    .report-section-header p {
+        margin: 5px 0 0;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .report-placeholder {
+        margin-top: 20px;
+        min-height: 180px;
+        border: 1px dashed #d1d5db;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        color: #6b7280;
+    }
+
+    .report-placeholder-icon {
+        font-size: 30px;
+    }
+
+    .report-placeholder strong {
+        display: block;
+        color: #374151;
+        margin-bottom: 4px;
+    }
+
+    .report-placeholder p {
+        margin: 0;
+        font-size: 13px;
+    }
+
+    @@media (max-width: 1000px) {
+        .report-cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .report-cards {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .report-analysis {
+        margin-top: 20px;
+    }
+
+    .analysis-title {
+        margin-bottom: 20px;
+    }
+
+        .analysis-title h4 {
+            margin: 0;
+            font-size: 15px;
+            color: #1f2937;
+        }
+
+        .analysis-title p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+    .status-report-row {
+        display: grid;
+        grid-template-columns: 140px 1fr 65px;
+        gap: 14px;
+        align-items: center;
+        margin-bottom: 17px;
+    }
+
+    .status-report-info {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 13px;
+        color: #4b5563;
+    }
+
+        .status-report-info strong {
+            color: #111827;
+        }
+
+    .status-progress {
+        height: 9px;
+        background: #f3f4f6;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .status-progress-value {
+        height: 100%;
+        background: #22a06b;
+        border-radius: 20px;
+    }
+
+    .status-percentage {
+        font-size: 12px;
+        color: #6b7280;
+        text-align: right;
+    }
+
+    .empty-report {
+        padding: 30px;
+        text-align: center;
+        color: #9ca3af;
+        font-size: 13px;
+    }
+    .critical-stock-table {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .critical-stock-head,
+    .critical-stock-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 90px;
+        gap: 15px;
+        align-items: center;
+        padding: 14px 16px;
+    }
+
+    .critical-stock-head {
+        background: #f9fafb;
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .critical-stock-row {
+        border-top: 1px solid #f3f4f6;
+        font-size: 13px;
+        color: #4b5563;
+    }
+
+        .critical-stock-row strong {
+            display: block;
+            color: #1f2937;
+        }
+
+        .critical-stock-row small {
+            display: block;
+            margin-top: 3px;
+            color: #9ca3af;
+        }
+
+    .critical-badge {
+        display: inline-block;
+        width: fit-content;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #fef2f2;
+        color: #b91c1c;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    .finance-report-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+    }
+
+    .finance-report-item {
+        padding: 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #f9fafb;
+    }
+
+        .finance-report-item span {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .finance-report-item strong {
+            display: block;
+            font-size: 18px;
+            color: #111827;
+        }
+
+    @@media (max-width: 800px) {
+        .finance-report-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

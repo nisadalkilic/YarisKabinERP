@@ -1,0 +1,392 @@
+﻿@model UretimERP.Models.Urunler
+
+@{
+    ViewBag.Title = "Yeni Ürün";
+}
+
+<div class="create-page">
+
+    <div class="create-header">
+        <div>
+            <h2>Yeni Ürün</h2>
+            <p>Sisteme yeni bir ürün kartı oluşturun.</p>
+        </div>
+
+        <a href="@Url.Action("Index", "Urunler")" class="back-button">
+            ← Ürünlere Dön
+        </a>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="create-card">
+
+            <div class="create-card-header">
+                <h3>Ürün Bilgileri</h3>
+                <p>Yeni ürüne ait temel bilgileri girin.</p>
+            </div>
+
+            <div class="create-body">
+
+                @Html.ValidationSummary(true, "", new { @class = "validation-summary" })
+
+                <div class="form-grid">
+
+                    <div class="form-field">
+                        <label>Ürün Kodu</label>
+
+                        @Html.EditorFor(model => model.UrunKodu,
+                            new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "erp-input",
+                                    placeholder = "Örn: HM-SAC-001"
+                                }
+                            })
+
+                        @Html.ValidationMessageFor(
+                            model => model.UrunKodu,
+                            "",
+                            new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label>Ürün Adı</label>
+
+                        @Html.EditorFor(model => model.UrunAdi,
+                            new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "erp-input",
+                                    placeholder = "Ürün adını girin"
+                                }
+                            })
+
+                        @Html.ValidationMessageFor(
+                            model => model.UrunAdi,
+                            "",
+                            new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label>Kategori</label>
+
+                        @Html.DropDownList(
+                            "KategoriID",
+                            null,
+                            "Kategori seçin",
+                            new { @class = "erp-input" })
+
+                        @Html.ValidationMessageFor(
+                            model => model.KategoriID,
+                            "",
+                            new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label>Ürün Tipi</label>
+
+                        @Html.DropDownList(
+                            "UrunTipiID",
+                            null,
+                            "Ürün tipi seçin",
+                            new { @class = "erp-input" })
+
+                        @Html.ValidationMessageFor(
+                            model => model.UrunTipiID,
+                            "",
+                            new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label>Birim</label>
+
+                        @Html.DropDownList(
+                            "BirimID",
+                            null,
+                            "Birim seçin",
+                            new { @class = "erp-input" })
+
+                        @Html.ValidationMessageFor(
+                            model => model.BirimID,
+                            "",
+                            new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label>Minimum Stok</label>
+
+                        @Html.EditorFor(model => model.MinimumStok,
+                            new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "erp-input"
+                                }
+                            })
+
+                        @Html.ValidationMessageFor(
+                            model => model.MinimumStok,
+                            "",
+                            new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label>Maksimum Stok</label>
+
+                        @Html.EditorFor(model => model.MaksimumStok,
+                            new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "erp-input"
+                                }
+                            })
+
+                        @Html.ValidationMessageFor(
+                            model => model.MaksimumStok,
+                            "",
+                            new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-field">
+                        <label>Durum</label>
+
+                        <div class="active-box">
+                            @Html.EditorFor(model => model.AktifMi)
+                            <span>Ürün aktif</span>
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            model => model.AktifMi,
+                            "",
+                            new { @class = "field-error" })
+                    </div>
+
+                    <div class="form-field full-width">
+                        <label>Açıklama</label>
+
+                        @Html.EditorFor(model => model.Aciklama,
+                            new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "erp-input",
+                                    placeholder = "Ürün hakkında açıklama..."
+                                }
+                            })
+
+                        @Html.ValidationMessageFor(
+                            model => model.Aciklama,
+                            "",
+                            new { @class = "field-error" })
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="create-footer">
+
+                <a href="@Url.Action("Index", "Urunler")"
+                   class="cancel-button">
+                    İptal
+                </a>
+
+                <button type="submit" class="save-button">
+                    Ürünü Kaydet
+                </button>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+<style>
+
+    .create-page {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .create-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+        .create-header h2 {
+            margin: 0;
+            font-size: 26px;
+            color: #1f2937;
+        }
+
+        .create-header p {
+            margin: 6px 0 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+    .back-button {
+        padding: 9px 13px;
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        color: #4b5563;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .create-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .create-card-header {
+        padding: 19px 20px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+        .create-card-header h3 {
+            margin: 0;
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        .create-card-header p {
+            margin: 5px 0 0;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+    .create-body {
+        padding: 20px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+        .form-field label {
+            margin: 0;
+            color: #4b5563;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+    .erp-input {
+        width: 100%;
+        min-height: 40px;
+        padding: 9px 11px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #1f2937;
+        font-size: 13px;
+        box-sizing: border-box;
+        outline: none;
+    }
+
+        .erp-input:focus {
+            border-color: #16a34a;
+        }
+
+    .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .active-box {
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 0 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+    }
+
+        .active-box span {
+            color: #4b5563;
+            font-size: 13px;
+        }
+
+    .field-error,
+    .validation-summary {
+        color: #dc2626;
+        font-size: 11px;
+    }
+
+    .create-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+        padding: 16px 20px;
+        border-top: 1px solid #e5e7eb;
+        background: #f9fafb;
+    }
+
+    .cancel-button,
+    .save-button {
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .cancel-button {
+        border: 1px solid #d1d5db;
+        background: #ffffff;
+        color: #4b5563;
+        text-decoration: none;
+    }
+
+    .save-button {
+        border: none;
+        background: #166534;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+        .save-button:hover {
+            background: #14532d;
+        }
+
+    @@media (max-width: 750px) {
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .full-width {
+            grid-column: auto;
+        }
+
+        .create-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,216 @@
+﻿@model IEnumerable<UretimERP.Models.IslemKaydiListeViewModel>
+
+@{
+    ViewBag.Title = "İşlem Geçmişi";
+}
+
+<div class="audit-page">
+
+    <div class="audit-header">
+        <div>
+            <h2>Sistem İşlem Geçmişi</h2>
+            <p>Sistemde kayıt altına alınmış kullanıcı işlemlerini görüntüleyin.</p>
+        </div>
+    </div>
+
+    <div class="audit-stat">
+        <span>Toplam İşlem Kaydı</span>
+        <strong>@ViewBag.ToplamIslem</strong>
+    </div>
+
+    <div class="audit-card">
+
+        <div class="audit-card-header">
+            <div>
+                <h3>İşlem Kayıtları</h3>
+                <p>En son gerçekleştirilen işlemler üstte gösterilir.</p>
+            </div>
+        </div>
+
+        <table class="audit-table">
+
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Kullanıcı</th>
+                    <th>İşlem Türü</th>
+                    <th>Tablo</th>
+                    <th>Kayıt ID</th>
+                    <th>Açıklama</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var kayit in Model)
+                    {
+                        <tr>
+                            <td>
+                                @kayit.IslemTarihi.ToString("dd.MM.yyyy HH:mm")
+                            </td>
+
+                            <td>
+                                <strong>@kayit.KullaniciAdi</strong>
+                            </td>
+
+                            <td>
+                                <span class="operation-badge">
+                                    @kayit.IslemTuru
+                                </span>
+                            </td>
+
+                            <td>@kayit.TabloAdi</td>
+
+                            <td>
+                                @if (kayit.KayitID.HasValue)
+                                {
+                                    @kayit.KayitID.Value
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+
+                            <td>
+                                @(string.IsNullOrWhiteSpace(kayit.Aciklama)
+                                    ? "-"
+                                    : kayit.Aciklama)
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="empty-audit">
+                            Henüz işlem kaydı bulunmuyor.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<style>
+
+    .audit-page {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .audit-header h2 {
+        margin: 0;
+        font-size: 26px;
+        color: #1f2937;
+    }
+
+    .audit-header p {
+        margin: 6px 0 0;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .audit-stat {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 18px;
+    }
+
+        .audit-stat span {
+            display: block;
+            margin-bottom: 7px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .audit-stat strong {
+            color: #111827;
+            font-size: 24px;
+        }
+
+    .audit-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .audit-card-header {
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+        .audit-card-header h3 {
+            margin: 0;
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        .audit-card-header p {
+            margin: 5px 0 0;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+    .audit-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .audit-table th {
+            padding: 13px 16px;
+            text-align: left;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .audit-table td {
+            padding: 14px 16px;
+            border-top: 1px solid #f3f4f6;
+            color: #4b5563;
+            font-size: 13px;
+            vertical-align: top;
+        }
+
+            .audit-table td strong {
+                color: #1f2937;
+            }
+
+    .operation-badge {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #ecfdf5;
+        color: #047857;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .empty-audit {
+        padding: 40px !important;
+        text-align: center;
+        color: #9ca3af !important;
+    }
+
+    @@media (max-width: 900px) {
+        .audit-card {
+            overflow-x: auto;
+        }
+
+        .audit-table {
+            min-width: 850px;
+        }
+    }
+</style>

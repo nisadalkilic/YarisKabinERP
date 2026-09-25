@@ -1,0 +1,155 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@model List<UretimERP.Models.AramaSonucViewModel>
+
+
+@{
+    ViewBag.Title = "Genel Arama";
+}
+
+<div class="search-page">
+
+    <div class="search-header">
+        <div>
+            <h2>Arama Sonuçları</h2>
+
+            @if (!string.IsNullOrWhiteSpace(ViewBag.AramaMetni as string))
+            {
+                <p>
+                    "<strong>@ViewBag.AramaMetni</strong>" için bulunan sonuçlar
+                </p>
+            }
+            else
+            {
+                <p>Aramak istediğiniz kelimeyi üstteki arama alanına yazın.</p>
+            }
+        </div>
+    </div>
+
+    <div class="search-results">
+
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var sonuc in Model)
+            {
+                <div class="result-card">
+
+                    <div class="result-type">
+                        @sonuc.Tur
+                    </div>
+
+                    <div class="result-content">
+                        <strong>@sonuc.Baslik</strong>
+                        <span>@sonuc.Kod</span>
+                        <small>@sonuc.Aciklama</small>
+                    </div>
+
+                    <a href="@Url.Action("Details", sonuc.Controller, new { id = sonuc.ID })"
+                       class="result-button">
+                        Detay →
+                    </a>
+
+                </div>
+            }
+        }
+        else if (!string.IsNullOrWhiteSpace(ViewBag.AramaMetni as string))
+        {
+            <div class="empty-result">
+                Aramanızla eşleşen kayıt bulunamadı.
+            </div>
+        }
+
+    </div>
+
+</div>
+
+<style>
+    .search-header {
+        margin-bottom: 18px;
+    }
+
+        .search-header h2 {
+            margin: 0 0 5px;
+            font-size: 24px;
+        }
+
+        .search-header p {
+            margin: 0;
+            color: #87938c;
+            font-size: 12px;
+        }
+
+    .search-results {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .result-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: #fff;
+        border: 1px solid #edf1ee;
+        border-radius: 14px;
+        padding: 16px 18px;
+    }
+
+    .result-type {
+        min-width: 75px;
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: #edf5f0;
+        color: #174d32;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .result-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+        .result-content strong {
+            font-size: 13px;
+        }
+
+        .result-content span {
+            color: #64736b;
+            font-size: 11px;
+        }
+
+        .result-content small {
+            color: #9aa59e;
+            font-size: 10px;
+        }
+
+    .result-button {
+        padding: 8px 12px;
+        border: 1px solid #d8e3dc;
+        border-radius: 8px;
+        background: #f8fbf9;
+        color: #174d32;
+        text-decoration: none;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+        .result-button:hover {
+            background: #edf5f0;
+            color: #174d32;
+            text-decoration: none;
+        }
+
+    .empty-result {
+        background: #fff;
+        border: 1px solid #edf1ee;
+        border-radius: 14px;
+        padding: 35px;
+        text-align: center;
+        color: #929d97;
+        font-size: 12px;
+    }
+</style>

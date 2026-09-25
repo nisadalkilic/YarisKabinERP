@@ -1,0 +1,233 @@
+﻿@model IEnumerable<UretimERP.Models.SiparisDetaylari>
+
+@{
+    ViewBag.Title = "Sipariş Detayı";
+
+    var siparis = ViewBag.Siparis as UretimERP.Models.Siparisler;
+}
+
+<div class="page-header">
+    <div>
+        <h2>Sipariş Detayı</h2>
+        <p>@siparis.SiparisNo numaralı siparişin bilgileri</p>
+    </div>
+
+    <a href="@Url.Action("Index", "Siparis")"
+       class="back-button">
+        ← Siparişlere Dön
+    </a>
+</div>
+
+<div class="order-detail-card">
+
+    <div class="detail-item">
+        <span>Sipariş No</span>
+        <strong>@siparis.SiparisNo</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Müşteri</span>
+        <strong>@siparis.Musteriler.FirmaAdi</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Sipariş Tarihi</span>
+        <strong>@siparis.SiparisTarihi.ToString("dd.MM.yyyy")</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Termin Tarihi</span>
+
+        @if (siparis.TerminTarihi.HasValue)
+        {
+            <strong>
+                @siparis.TerminTarihi.Value.ToString("dd.MM.yyyy")
+            </strong>
+        }
+        else
+        {
+            <strong>-</strong>
+        }
+    </div>
+
+    <div class="detail-item">
+        <span>Durum</span>
+        <strong>@siparis.Durum</strong>
+    </div>
+
+</div>
+
+<div class="order-lines-card">
+
+    <div class="card-header">
+        <h3>Sipariş Kalemleri</h3>
+        <p>Bu sipariş içerisinde talep edilen ürünler</p>
+    </div>
+
+    <table class="order-lines-table">
+        <thead>
+            <tr>
+                <th>Ürün Kodu</th>
+                <th>Ürün</th>
+                <th>Miktar</th>
+                <th>Birim Fiyat</th>
+                <th>Satır Tutarı</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @if (Model != null && Model.Any())
+            {
+                foreach (var detay in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@detay.Urunler.UrunKodu</strong>
+                        </td>
+
+                        <td>@detay.Urunler.UrunAdi</td>
+
+                        <td>
+                            <strong>@detay.Miktar</strong>
+                        </td>
+
+                        <td>@detay.BirimFiyat</td>
+                        <td>
+                            <strong>@(detay.Miktar * detay.BirimFiyat)</strong>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="empty-message">
+                        Bu siparişe ait ürün bulunmuyor.
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <div class="order-total">
+        <span>Sipariş Toplamı</span>
+        <strong>@ViewBag.ToplamTutar</strong>
+    </div>
+</div>
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .page-header p {
+            margin: 5px 0 0;
+            font-size: 11px;
+            color: #8a928c;
+        }
+
+    .back-button {
+        padding: 10px 14px;
+        background: white;
+        border: 1px solid #e4e9e5;
+        border-radius: 9px;
+        text-decoration: none;
+        color: #315c3d;
+        font-size: 11px;
+    }
+
+    .order-detail-card {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .detail-item {
+        background: white;
+        padding: 17px;
+        border-radius: 14px;
+    }
+
+        .detail-item span {
+            display: block;
+            font-size: 10px;
+            color: #929a94;
+            margin-bottom: 7px;
+        }
+
+        .detail-item strong {
+            font-size: 12px;
+            color: #26342b;
+        }
+
+    .order-lines-card {
+        background: white;
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .card-header h3 {
+        margin: 0;
+        font-size: 15px;
+    }
+
+    .card-header p {
+        margin: 5px 0 18px;
+        font-size: 10px;
+        color: #969d98;
+    }
+
+    .order-lines-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .order-lines-table th {
+            text-align: left;
+            padding: 11px;
+            font-size: 10px;
+            color: #8a928c;
+            border-bottom: 1px solid #edf0ed;
+        }
+
+        .order-lines-table td {
+            padding: 14px 11px;
+            font-size: 11px;
+            color: #3f4942;
+            border-bottom: 1px solid #f0f2f0;
+        }
+
+    .empty-message {
+        text-align: center !important;
+        padding: 30px !important;
+        color: #929a94 !important;
+    }
+    .order-total {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 20px;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid #edf0ed;
+    }
+
+        .order-total span {
+            font-size: 11px;
+            color: #8a928c;
+        }
+
+        .order-total strong {
+            font-size: 18px;
+            color: #174b2d;
+        }
+</style>

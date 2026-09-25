@@ -1,0 +1,214 @@
+﻿@model IEnumerable<UretimERP.Models.KullaniciListeViewModel>
+
+@{
+    ViewBag.Title = "Kullanıcılar";
+}
+
+<div class="users-page">
+
+    <div class="users-header">
+        <div>
+            <h2>Kullanıcı Yönetimi</h2>
+            <p>Sistemde kayıtlı kullanıcıları ve hesap durumlarını görüntüleyin.</p>
+        </div>
+    </div>
+
+    <div class="users-card">
+
+        <div class="users-card-header">
+            <div>
+                <h3>Kullanıcılar</h3>
+                <p>Toplam @Model.Count() kullanıcı</p>
+            </div>
+        </div>
+
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>Ad Soyad</th>
+                    <th>Kullanıcı Adı</th>
+                    <th>Rol</th>
+                    <th>E-posta</th>
+                    <th>Oluşturulma</th>
+                    <th>Son Giriş</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var kullanici in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@kullanici.AdSoyad</strong>
+                            </td>
+
+                            <td>@kullanici.KullaniciAdi</td>
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(kullanici.Roller))
+                                {
+                                    <span class="role-badge">
+                                        @kullanici.Roller
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+
+                            <td>
+                                @(string.IsNullOrWhiteSpace(kullanici.Email)
+                                    ? "-"
+                                    : kullanici.Email)
+                            </td>
+
+                            <td>
+                                @kullanici.OlusturmaTarihi.ToString("dd.MM.yyyy")
+                            </td>
+
+                            <td>
+                                @if (kullanici.SonGirisTarihi.HasValue)
+                                {
+                                    @kullanici.SonGirisTarihi.Value.ToString("dd.MM.yyyy HH:mm")
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (kullanici.AktifMi)
+                                {
+                                    <span class="user-status active-user">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="user-status passive-user">Pasif</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="empty-users">
+                            Henüz kullanıcı kaydı bulunmuyor.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<style>
+
+    .users-page {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .users-header h2 {
+        margin: 0;
+        font-size: 26px;
+        color: #1f2937;
+    }
+
+    .users-header p {
+        margin: 6px 0 0;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .users-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .users-card-header {
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+        .users-card-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #1f2937;
+        }
+
+        .users-card-header p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+    .users-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .users-table th {
+            padding: 13px 16px;
+            text-align: left;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .users-table td {
+            padding: 14px 16px;
+            border-top: 1px solid #f3f4f6;
+            color: #4b5563;
+            font-size: 13px;
+        }
+
+            .users-table td strong {
+                color: #1f2937;
+            }
+
+    .user-status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .active-user {
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    .passive-user {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    .empty-users {
+        padding: 35px !important;
+        text-align: center;
+        color: #9ca3af !important;
+    }
+    .role-badge {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #ecfdf5;
+        color: #047857;
+        font-size: 11px;
+        font-weight: 600;
+    }
+</style>

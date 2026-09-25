@@ -1,0 +1,261 @@
+﻿@model IEnumerable<UretimERP.Models.StokHareketleri>
+
+@{
+    ViewBag.Title = "Stok Detayı";
+
+    var stok = ViewBag.Stok as UretimERP.Models.Stoklar;
+}
+
+<div class="page-header">
+    <div>
+        <h2>Stok Detayı</h2>
+        <p>Ürünün depo bazlı stok hareketlerini inceleyin.</p>
+    </div>
+
+    <a href="@Url.Action("Index", "Stok")"
+       class="back-button">
+        ← Stok Listesine Dön
+    </a>
+</div>
+
+<div class="stock-detail-card">
+
+    <div class="detail-item">
+        <span>Ürün Kodu</span>
+        <strong>@stok.Urunler.UrunKodu</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Ürün</span>
+        <strong>@stok.Urunler.UrunAdi</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Depo</span>
+        <strong>@stok.Depolar.DepoAdi</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Fiziksel Stok</span>
+        <strong>@stok.Miktar</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Rezerve</span>
+        <strong>@stok.RezerveMiktar</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Kullanılabilir</span>
+        <strong>@(stok.Miktar - stok.RezerveMiktar)</strong>
+    </div>
+
+</div>
+
+<div class="movement-card">
+
+    <div class="movement-header">
+        <div>
+            <h3>Stok Hareketleri</h3>
+            <p>Ürünün giriş ve çıkış geçmişi</p>
+        </div>
+    </div>
+
+    <table class="movement-table">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Hareket</th>
+                <th>Miktar</th>
+                <th>Kaynak</th>
+                <th>Açıklama</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @if (Model != null && Model.Any())
+            {
+                foreach (var hareket in Model)
+                {
+                    <tr>
+                        <td>@hareket.Tarih.ToString("dd.MM.yyyy HH:mm")</td>
+
+                        <td>
+                            @if (hareket.HareketTipi == "Giriş")
+                            {
+                                <span class="movement-status incoming">
+                                    Giriş
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="movement-status outgoing">
+                                    Çıkış
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            <strong>@hareket.Miktar</strong>
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(hareket.ReferansTuru))
+                            {
+                                <span class="reference-badge">
+                                    @hareket.ReferansTuru
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="reference-empty">-</span>
+                            }
+                        </td>
+                        <td>@hareket.Aciklama</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="empty-message">
+                        Bu stok için henüz hareket kaydı bulunmuyor.
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .page-header p {
+            margin: 5px 0 0;
+            font-size: 11px;
+            color: #8a928c;
+        }
+
+    .back-button {
+        padding: 10px 14px;
+        background: white;
+        border: 1px solid #e4e9e5;
+        border-radius: 9px;
+        text-decoration: none;
+        color: #315c3d;
+        font-size: 11px;
+    }
+
+    .stock-detail-card {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        background: white;
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+    }
+
+    .detail-item {
+        padding: 12px;
+        background: #f8faf8;
+        border-radius: 9px;
+    }
+
+        .detail-item span {
+            display: block;
+            font-size: 10px;
+            color: #929a94;
+            margin-bottom: 5px;
+        }
+
+        .detail-item strong {
+            font-size: 13px;
+            color: #26342b;
+        }
+
+    .movement-card {
+        background: white;
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .movement-header h3 {
+        margin: 0;
+        font-size: 15px;
+    }
+
+    .movement-header p {
+        margin: 5px 0 18px;
+        font-size: 10px;
+        color: #969d98;
+    }
+
+    .movement-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .movement-table th {
+            text-align: left;
+            padding: 11px;
+            font-size: 10px;
+            color: #8a928c;
+            border-bottom: 1px solid #edf0ed;
+        }
+
+        .movement-table td {
+            padding: 13px 11px;
+            font-size: 11px;
+            border-bottom: 1px solid #f0f2f0;
+        }
+
+    .movement-status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 9px;
+        font-weight: 600;
+    }
+
+        .movement-status.incoming {
+            background: #eaf7ed;
+            color: #367245;
+        }
+
+        .movement-status.outgoing {
+            background: #fff1ee;
+            color: #a64a3e;
+        }
+    .empty-message {
+        text-align: center !important;
+        padding: 30px !important;
+        color: #929a94;
+        font-size: 11px;
+    }
+    .reference-badge {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #f0f4f1;
+        color: #53685a;
+        font-size: 9px;
+        font-weight: 600;
+    }
+
+    .reference-empty {
+        color: #a8afa9;
+    }
+</style>

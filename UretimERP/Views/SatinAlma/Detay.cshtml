@@ -1,0 +1,292 @@
+﻿@model IEnumerable<UretimERP.Models.SatinAlmaDetaylari>
+
+@{
+    ViewBag.Title = "Satın Alma Detayı";
+    var satinAlma = ViewBag.SatinAlma as UretimERP.Models.SatinAlmaSiparisleri;
+}
+
+<div class="page-header">
+    <div>
+        <h2>Satın Alma Detayı</h2>
+        <p>@satinAlma.SatinAlmaSiparisNo numaralı satın alma siparişi</p>
+    </div>
+
+    <a href="@Url.Action("Index", "SatinAlma")"
+       class="back-button">
+        ← Satın Almaya Dön
+    </a>
+</div>
+
+<div class="purchase-detail">
+
+    <div class="detail-item">
+        <span>Sipariş No</span>
+        <strong>@satinAlma.SatinAlmaSiparisNo</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Tedarikçi</span>
+        <strong>@satinAlma.Tedarikciler.FirmaAdi</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Sipariş Tarihi</span>
+        <strong>@satinAlma.SiparisTarihi.ToString("dd.MM.yyyy")</strong>
+    </div>
+
+    <div class="detail-item">
+        <span>Beklenen Teslim</span>
+
+        @if (satinAlma.BeklenenTeslimTarihi.HasValue)
+        {
+            <strong>
+                @satinAlma.BeklenenTeslimTarihi.Value.ToString("dd.MM.yyyy")
+            </strong>
+        }
+        else
+        {
+            <strong>-</strong>
+        }
+    </div>
+
+    <div class="detail-item">
+        <span>Durum</span>
+        <strong>@satinAlma.Durum</strong>
+    </div>
+
+</div>
+
+<div class="purchase-lines-card">
+
+    <div class="card-header">
+        <h3>Sipariş Kalemleri</h3>
+        <p>Tedarikçiden sipariş edilen malzemeler</p>
+    </div>
+
+    <table class="purchase-lines-table">
+
+        <thead>
+            <tr>
+                <th>Ürün Kodu</th>
+                <th>Ürün</th>
+                <th>Sipariş Miktarı</th>
+                <th>Teslim Alınan</th>
+                <th>Kalan</th>
+                <th>Birim Fiyat</th>
+                <th>KDV</th>
+                <th>Satır Tutarı</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @if (Model != null && Model.Any())
+            {
+                foreach (var detay in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <strong>@detay.Urunler.UrunKodu</strong>
+                        </td>
+
+                        <td>
+                            @detay.Urunler.UrunAdi
+                        </td>
+
+                        <td>
+                            @detay.SiparisMiktari
+                        </td>
+
+                        <td>
+                            @detay.TeslimAlinanMiktar
+                        </td>
+
+                        <td>
+                            <strong>
+                                @(detay.SiparisMiktari - detay.TeslimAlinanMiktar)
+                            </strong>
+                        </td>
+
+                        <td>
+                            @detay.BirimFiyat
+                        </td>
+
+                        <td>
+                            %@detay.KDVOrani
+                        </td>
+                        <td>
+                            @((detay.SiparisMiktari * detay.BirimFiyat).ToString("N2"))
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="empty-message">
+                        Bu satın alma siparişine ait ürün bulunmuyor.
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+    @{
+        decimal araToplam = Model.Sum(x => x.SiparisMiktari * x.BirimFiyat);
+
+        decimal kdvToplami = Model.Sum(x =>
+            (x.SiparisMiktari * x.BirimFiyat) * (x.KDVOrani / 100));
+
+        decimal genelToplam = araToplam + kdvToplami;
+    }
+
+    <div class="purchase-total">
+        <div>
+            <span>Ara Toplam</span>
+            <strong>@araToplam.ToString("N2")</strong>
+        </div>
+
+        <div>
+            <span>KDV Toplamı</span>
+            <strong>@kdvToplami.ToString("N2")</strong>
+        </div>
+
+        <div>
+            <span>Genel Toplam</span>
+            <strong>@genelToplam.ToString("N2")</strong>
+        </div>
+    </div>
+</div>
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .page-header p {
+            margin: 5px 0 0;
+            font-size: 11px;
+            color: #8a928c;
+        }
+
+    .back-button {
+        padding: 10px 14px;
+        background: white;
+        border: 1px solid #e4e9e5;
+        border-radius: 9px;
+        text-decoration: none;
+        color: #315c3d;
+        font-size: 11px;
+    }
+
+    .purchase-detail {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .detail-item {
+        background: white;
+        padding: 17px;
+        border-radius: 14px;
+    }
+
+        .detail-item span {
+            display: block;
+            font-size: 10px;
+            color: #929a94;
+            margin-bottom: 7px;
+        }
+
+        .detail-item strong {
+            font-size: 12px;
+            color: #26342b;
+        }
+
+    .purchase-lines-card {
+        background: white;
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .card-header h3 {
+        margin: 0;
+        font-size: 15px;
+    }
+
+    .card-header p {
+        margin: 5px 0 18px;
+        font-size: 10px;
+        color: #969d98;
+    }
+
+    .purchase-lines-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .purchase-lines-table th {
+            text-align: left;
+            padding: 11px;
+            font-size: 10px;
+            color: #8a928c;
+            border-bottom: 1px solid #edf0ed;
+        }
+
+        .purchase-lines-table td {
+            padding: 14px 11px;
+            font-size: 11px;
+            color: #3f4942;
+            border-bottom: 1px solid #f0f2f0;
+        }
+
+    .empty-message {
+        text-align: center !important;
+        padding: 30px !important;
+        color: #929a94 !important;
+    }
+    .purchase-total {
+        margin-top: 18px;
+        margin-left: auto;
+        width: 320px;
+        padding-top: 14px;
+        border-top: 1px solid #e8ece9;
+    }
+
+        .purchase-total > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+        }
+
+        .purchase-total span {
+            color: #7b8780;
+            font-size: 13px;
+        }
+
+        .purchase-total strong {
+            font-size: 14px;
+        }
+
+        .purchase-total > div:last-child {
+            margin-top: 5px;
+            padding-top: 12px;
+            border-top: 1px solid #e8ece9;
+        }
+
+            .purchase-total > div:last-child span,
+            .purchase-total > div:last-child strong {
+                font-size: 16px;
+            }
+</style>

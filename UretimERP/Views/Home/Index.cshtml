@@ -1,0 +1,615 @@
+﻿@{
+    ViewBag.Title = "Overview";
+}
+
+<div class="dash-title">
+    <div>
+        <h1>Dashboard</h1>
+        <p>Üretim ve işletme süreçlerinin genel görünümü</p>
+    </div>
+
+    <div class="dash-date">
+        @DateTime.Now.ToString("dd MMMM yyyy")
+    </div>
+</div>
+
+
+<div class="kpi-grid">
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span>Toplam Sipariş</span>
+            <span class="kpi-symbol">↗</span>
+        </div>
+
+        <div class="kpi-value">
+            @ViewBag.ToplamSiparis
+        </div>
+
+        <div class="kpi-bottom">
+            Müşteri siparişleri
+        </div>
+    </div>
+
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span>Kritik Stok</span>
+            <span class="kpi-symbol">!</span>
+        </div>
+
+        <div class="kpi-value">
+            @ViewBag.KritikStok
+        </div>
+
+        <div class="kpi-bottom">
+            Kontrol gerektiren ürün
+        </div>
+    </div>
+
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span>Üretimde</span>
+            <span class="kpi-symbol">⚙</span>
+        </div>
+
+        <div class="kpi-value">
+            @ViewBag.UretimdekiEmir
+        </div>
+
+        <div class="kpi-bottom">
+            Aktif üretim emri
+        </div>
+    </div>
+
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <span>Açık Satın Alma</span>
+            <span class="kpi-symbol">+</span>
+        </div>
+
+        <div class="kpi-value">
+            @ViewBag.AcikSatinAlma
+        </div>
+
+        <div class="kpi-bottom">
+            Devam eden sipariş
+        </div>
+    </div>
+
+</div>
+
+
+<div class="dashboard-middle">
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h3>Stok Durumu</h3>
+                <span>Genel stok görünümü</span>
+            </div>
+
+            <span class="panel-menu">•••</span>
+        </div>
+
+        <div class="stock-visual">
+
+            <div class="stock-circle">
+                <div>
+                    <strong>@ViewBag.KritikStok</strong>
+                    <span>Kritik</span>
+                </div>
+            </div>
+
+            <div class="stock-info">
+                <strong>Stok Kontrolü</strong>
+                <p>
+                    Minimum seviyeye ulaşan ürünleri
+                    kritik stok listesinden takip edebilirsin.
+                </p>
+
+                <a href="#">Tüm stokları görüntüle →</a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h3>Üretim Durumu</h3>
+                <span>Aktif üretim emirleri</span>
+            </div>
+
+            <span class="panel-menu">•••</span>
+        </div>
+
+        <div class="production-area">
+
+            <div class="production-number">
+                @ViewBag.UretimdekiEmir
+            </div>
+
+            <span>şu anda üretimde</span>
+
+            <div class="real-chart">
+
+                @foreach (var durum in ViewBag.UretimDurumlari)
+                {
+                    <div class="chart-item">
+
+                        <div class="chart-value">
+                            @durum.Adet
+                        </div>
+
+                        @{
+                            var barHeight = Math.Max(15, durum.Adet * 25);
+                        }
+
+                        <div class="chart-bar"
+                             style="@("height:" + barHeight + "px;")">
+                        </div>
+
+                        <div class="chart-label">
+                            @durum.Durum
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="bottom-grid">
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h3>Son Siparişler</h3>
+                <span>En güncel müşteri siparişleri</span>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="erp-table">
+
+                <thead>
+                    <tr>
+                        <th>Sipariş No</th>
+                        <th>Tarih</th>
+                        <th>Durum</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var siparis in ViewBag.SonSiparisler)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@siparis.SiparisNo</strong>
+                            </td>
+
+                            <td>
+                                @siparis.SiparisTarihi.ToString("dd.MM.yyyy")
+                            </td>
+
+                            <td>
+                                <span class="status-badge">
+                                    @siparis.Durum
+                                </span>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="panel">
+
+        <div class="panel-header">
+            <div>
+                <h3>Kritik Stoklar</h3>
+                <span>Minimum stok seviyesine ulaşan ürünler</span>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="erp-table">
+
+                <thead>
+                    <tr>
+                        <th>Ürün</th>
+                        <th>Stok</th>
+                        <th>Min.</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var stok in ViewBag.KritikStoklar)
+                    {
+                        <tr>
+
+                            <td>
+                                <strong>@stok.UrunAdi</strong>
+                                <small>@stok.UrunKodu</small>
+                            </td>
+
+                            <td>
+                                @stok.MevcutStok
+                            </td>
+
+                            <td>
+                                <span class="critical-badge">
+                                    @stok.MinimumStok
+                                </span>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    .dash-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+    }
+
+        .dash-title h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #202722;
+        }
+
+        .dash-title p {
+            margin: 5px 0 0;
+            color: #8a928c;
+            font-size: 12px;
+        }
+
+    .dash-date {
+        padding: 9px 13px;
+        background: white;
+        border: 1px solid #e5e9e5;
+        border-radius: 8px;
+        color: #657067;
+        font-size: 12px;
+    }
+
+
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+    .kpi-card {
+        background: white;
+        border: 1px solid #e7ebe7;
+        border-radius: 10px;
+        padding: 17px;
+    }
+
+    .kpi-top {
+        display: flex;
+        justify-content: space-between;
+        color: #727a74;
+        font-size: 12px;
+    }
+
+    .kpi-symbol {
+        width: 23px;
+        height: 23px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #e8f9eb;
+        color: #43a65a;
+        border-radius: 50%;
+        font-size: 11px;
+    }
+
+    .kpi-value {
+        font-size: 27px;
+        font-weight: 700;
+        color: #202722;
+        margin: 12px 0 5px;
+    }
+
+    .kpi-bottom {
+        font-size: 10px;
+        color: #9ba19c;
+    }
+
+
+    .dashboard-middle {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 18px;
+        margin-bottom: 18px;
+    }
+
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 18px;
+    }
+
+    .panel {
+        background: white;
+        border: 1px solid #e7ebe7;
+        border-radius: 10px;
+        padding: 18px;
+    }
+
+    .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+    }
+
+        .panel-header h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #262d28;
+        }
+
+        .panel-header span {
+            font-size: 10px;
+            color: #a0a7a2;
+        }
+
+        .panel-header div > span {
+            display: block;
+            margin-top: 4px;
+        }
+
+    .panel-menu {
+        letter-spacing: 2px;
+    }
+
+
+
+    .stock-visual {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        min-height: 180px;
+    }
+
+    .stock-circle {
+        width: 125px;
+        height: 125px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: conic-gradient( #6dd984 0deg 250deg, #e8f5ea 250deg 360deg );
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+        .stock-circle::after {
+            content: "";
+            position: absolute;
+            width: 88px;
+            height: 88px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .stock-circle div {
+            z-index: 2;
+            text-align: center;
+        }
+
+        .stock-circle strong {
+            display: block;
+            font-size: 24px;
+            color: #253029;
+        }
+
+        .stock-circle span {
+            font-size: 10px;
+            color: #929a94;
+        }
+
+    .stock-info strong {
+        font-size: 13px;
+    }
+
+    .stock-info p {
+        max-width: 230px;
+        color: #8b938d;
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .stock-info a {
+        font-size: 10px;
+        color: #43a65a;
+        text-decoration: none;
+    }
+
+
+
+    .production-area {
+        min-height: 180px;
+    }
+
+    .production-number {
+        display: inline-block;
+        font-size: 28px;
+        font-weight: 700;
+        color: #263029;
+        margin-right: 5px;
+    }
+
+    .production-area > span {
+        color: #9aa19c;
+        font-size: 11px;
+    }
+
+    .fake-chart {
+        height: 100px;
+        display: flex;
+        gap: 9px;
+        align-items: flex-end;
+        margin-top: 20px;
+        padding: 0 10px;
+        border-bottom: 1px solid #edf0ed;
+    }
+
+        .fake-chart div {
+            flex: 1;
+            max-width: 38px;
+            background: #a8eeb4;
+            border-radius: 7px 7px 0 0;
+        }
+
+
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .erp-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+    }
+
+        .erp-table th {
+            text-align: left;
+            color: #a0a6a1;
+            font-weight: 500;
+            padding: 10px;
+            border-bottom: 1px solid #edf0ed;
+        }
+
+        .erp-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #f0f2f0;
+            color: #616963;
+        }
+
+            .erp-table td strong {
+                color: #303832;
+                font-weight: 600;
+            }
+
+            .erp-table td small {
+                display: block;
+                color: #a1a7a2;
+                margin-top: 3px;
+            }
+
+    .status-badge {
+        display: inline-block;
+        background: #dcf7e1;
+        color: #348c49;
+        border-radius: 20px;
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+
+    .critical-badge {
+        display: inline-block;
+        background: #fff0df;
+        color: #b56b23;
+        border-radius: 20px;
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+
+
+    @@media(max-width: 1050px) {
+
+        .kpi-grid {
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .dashboard-middle,
+        .bottom-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    .real-chart {
+        height: 125px;
+        display: flex;
+        align-items: flex-end;
+        gap: 18px;
+        margin-top: 18px;
+        padding: 0 10px;
+        border-bottom: 1px solid #edf0ed;
+    }
+
+    .chart-item {
+        flex: 1;
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .chart-value {
+        font-size: 10px;
+        font-weight: 600;
+        color: #56605a;
+        margin-bottom: 4px;
+    }
+
+    .chart-bar {
+        width: 65%;
+        max-width: 38px;
+        min-height: 15px;
+        background: #a8eeb4;
+        border-radius: 6px 6px 0 0;
+    }
+
+    .chart-label {
+        height: 25px;
+        margin-top: 5px;
+        font-size: 9px;
+        color: #929a94;
+        text-align: center;
+    }
+</style>

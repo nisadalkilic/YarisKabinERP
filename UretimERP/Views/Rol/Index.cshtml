@@ -1,0 +1,207 @@
+﻿@model IEnumerable<UretimERP.Models.RolYetkiListeViewModel>
+
+@{
+    ViewBag.Title = "Rol ve Yetkiler";
+}
+
+<div class="roles-page">
+
+    <div class="roles-header">
+        <div>
+            <h2>Rol ve Yetki Yönetimi</h2>
+            <p>Sistemdeki rollerin ve bu rollere atanmış yetkilerin genel görünümü.</p>
+        </div>
+    </div>
+
+    <div class="roles-card">
+
+        <div class="roles-card-header">
+            <div>
+                <h3>Roller</h3>
+                <p>Toplam @Model.Count() rol</p>
+            </div>
+        </div>
+
+        <table class="roles-table">
+
+            <thead>
+                <tr>
+                    <th>Rol</th>
+                    <th>Açıklama</th>
+                    <th>Yetkiler</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var rol in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                <strong>@rol.RolAdi</strong>
+                            </td>
+
+                            <td>
+                                @(string.IsNullOrWhiteSpace(rol.Aciklama)
+                                    ? "-"
+                                    : rol.Aciklama)
+                            </td>
+
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(rol.Yetkiler))
+                                {
+                                    <span class="permission-text">
+                                        @rol.Yetkiler
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="no-permission">
+                                        Yetki atanmamış
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (rol.AktifMi)
+                                {
+                                    <span class="role-status active-role">
+                                        Aktif
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="role-status passive-role">
+                                        Pasif
+                                    </span>
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="empty-roles">
+                            Henüz rol tanımlanmamış.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<style>
+
+    .roles-page {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .roles-header h2 {
+        margin: 0;
+        font-size: 26px;
+        color: #1f2937;
+    }
+
+    .roles-header p {
+        margin: 6px 0 0;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .roles-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .roles-card-header {
+        padding: 20px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+        .roles-card-header h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #1f2937;
+        }
+
+        .roles-card-header p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+    .roles-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .roles-table th {
+            padding: 13px 16px;
+            text-align: left;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .roles-table td {
+            padding: 14px 16px;
+            border-top: 1px solid #f3f4f6;
+            color: #4b5563;
+            font-size: 13px;
+            vertical-align: top;
+        }
+
+            .roles-table td strong {
+                color: #1f2937;
+            }
+
+    .permission-text {
+        line-height: 1.7;
+        color: #4b5563;
+    }
+
+    .no-permission {
+        color: #9ca3af;
+        font-style: italic;
+    }
+
+    .role-status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .active-role {
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    .passive-role {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    .empty-roles {
+        padding: 35px !important;
+        text-align: center;
+        color: #9ca3af !important;
+    }
+</style>

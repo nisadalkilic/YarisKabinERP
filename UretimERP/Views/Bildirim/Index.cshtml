@@ -1,0 +1,276 @@
+﻿@model IEnumerable<UretimERP.Models.BildirimListeViewModel>
+
+@{
+    ViewBag.Title = "Bildirimler";
+}
+
+<div class="notification-page">
+
+    <div class="notification-header">
+        <div>
+            <h2>Bildirim Merkezi</h2>
+            <p>Sistem tarafından oluşturulan bildirimleri görüntüleyin.</p>
+        </div>
+    </div>
+
+    <div class="notification-stats">
+
+        <div class="notification-stat">
+            <span>Toplam Bildirim</span>
+            <strong>@ViewBag.ToplamBildirim</strong>
+        </div>
+
+        <div class="notification-stat">
+            <span>Okunmamış</span>
+            <strong>@ViewBag.OkunmamisBildirim</strong>
+        </div>
+
+    </div>
+
+    <div class="notification-card">
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var bildirim in Model)
+            {
+                <div class="notification-item @(bildirim.OkunduMu ? "" : "unread")">
+
+                    <div class="notification-main">
+
+                        <div class="notification-title">
+                            @bildirim.Baslik
+                        </div>
+
+                        <div class="notification-message">
+                            @bildirim.Mesaj
+                        </div>
+
+                        <div class="notification-meta">
+
+                            <span>
+                                @bildirim.OlusturmaTarihi.ToString("dd.MM.yyyy HH:mm")
+                            </span>
+
+                            <span>
+                                Kullanıcı: @bildirim.KullaniciAdi
+                            </span>
+
+                            @if (!string.IsNullOrWhiteSpace(bildirim.ReferansTuru))
+                            {
+                                <span>
+                                    Kaynak: @bildirim.ReferansTuru
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div class="notification-side">
+
+                        @if (!string.IsNullOrWhiteSpace(bildirim.OnemSeviyesi))
+                        {
+                            <span class="importance">
+                                @bildirim.OnemSeviyesi
+                            </span>
+                        }
+
+                        @if (bildirim.OkunduMu)
+                        {
+                            <span class="read-status read">
+                                Okundu
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="read-status unread-status">
+                                Okunmadı
+                            </span>
+
+                            using (Html.BeginForm("OkunduYap", "Bildirim", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("id", bildirim.BildirimID)
+
+                                <button type="submit" class="mark-read-button">
+                                    Okundu Yap
+                                </button>
+                            }
+                        }
+
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <div class="empty-notification">
+                Henüz bildirim bulunmuyor.
+            </div>
+        }
+
+    </div>
+
+</div>
+
+<style>
+
+    .notification-page {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .notification-header h2 {
+        margin: 0;
+        font-size: 26px;
+        color: #1f2937;
+    }
+
+    .notification-header p {
+        margin: 6px 0 0;
+        font-size: 14px;
+        color: #6b7280;
+    }
+
+    .notification-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .notification-stat {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 18px;
+    }
+
+        .notification-stat span {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .notification-stat strong {
+            font-size: 24px;
+            color: #111827;
+        }
+
+    .notification-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .notification-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item.unread {
+            background: #f0fdf4;
+        }
+
+    .notification-main {
+        flex: 1;
+    }
+
+    .notification-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .notification-message {
+        margin-top: 5px;
+        font-size: 13px;
+        color: #4b5563;
+    }
+
+    .notification-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 10px;
+        font-size: 11px;
+        color: #9ca3af;
+    }
+
+    .notification-side {
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .importance,
+    .read-status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .importance {
+        background: #f3f4f6;
+        color: #4b5563;
+    }
+
+    .read {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    .unread-status {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .empty-notification {
+        padding: 40px;
+        text-align: center;
+        color: #9ca3af;
+        font-size: 13px;
+    }
+
+    @@media (max-width: 800px) {
+
+        .notification-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .notification-item {
+            flex-direction: column;
+        }
+
+        .notification-side {
+            align-items: flex-start;
+        }
+    }
+    .mark-read-button {
+        border: none;
+        background: #166534;
+        color: #ffffff;
+        padding: 7px 11px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .mark-read-button:hover {
+            background: #14532d;
+        }
+</style>

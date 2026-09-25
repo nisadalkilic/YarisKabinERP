@@ -1,0 +1,253 @@
+﻿@model UretimERP.Models.Urunler
+
+@{
+    ViewBag.Title = "Ürün Detayı";
+}
+
+<div class="detail-page">
+
+    <div class="detail-header">
+        <div>
+            <h2>Ürün Detayı</h2>
+            <p>@Model.UrunKodu - @Model.UrunAdi</p>
+        </div>
+
+        <div class="detail-actions">
+            <a href="@Url.Action("Index", "Urunler")" class="back-button">
+                ← Ürünlere Dön
+            </a>
+
+            <a href="@Url.Action("Edit", "Urunler", new { id = Model.UrunID })"
+               class="edit-button">
+                Düzenle
+            </a>
+        </div>
+    </div>
+
+    <div class="detail-card">
+
+        <div class="detail-card-title">
+            Ürün Bilgileri
+        </div>
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+                <span>Ürün Kodu</span>
+                <strong>@Model.UrunKodu</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Ürün Adı</span>
+                <strong>@Model.UrunAdi</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Kategori</span>
+                <strong>
+                    @(Model.Kategoriler != null
+                        ? Model.Kategoriler.KategoriAdi
+                        : "-")
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Ürün Tipi</span>
+                <strong>
+                    @(Model.UrunTipleri != null
+                        ? Model.UrunTipleri.TipAdi
+                        : "-")
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Birim</span>
+                <strong>
+                    @(Model.Birimler != null
+                        ? Model.Birimler.BirimAdi
+                        : "-")
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Minimum Stok</span>
+                <strong>@Model.MinimumStok.ToString("N2")</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Maksimum Stok</span>
+                <strong>
+                    @(Model.MaksimumStok.HasValue
+        ? Model.MaksimumStok.Value.ToString("N2")
+        : "-")
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Durum</span>
+
+                @if (Model.AktifMi)
+                {
+                    <span class="status-badge active-status">Aktif</span>
+                }
+                else
+                {
+                    <span class="status-badge passive-status">Pasif</span>
+                }
+            </div>
+
+        </div>
+
+        <div class="description-area">
+            <span>Açıklama</span>
+
+            <p>
+                @(string.IsNullOrWhiteSpace(Model.Aciklama)
+                    ? "Açıklama bulunmuyor."
+                    : Model.Aciklama)
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+    .detail-page {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+    }
+
+        .detail-header h2 {
+            margin: 0;
+            font-size: 26px;
+            color: #1f2937;
+        }
+
+        .detail-header p {
+            margin: 6px 0 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+    .detail-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+        .detail-actions a {
+            padding: 9px 13px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+    .back-button {
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #4b5563;
+    }
+
+    .edit-button {
+        background: #166534;
+        color: #ffffff;
+    }
+
+        .edit-button:hover {
+            color: #ffffff;
+            background: #14532d;
+        }
+
+    .detail-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .detail-card-title {
+        padding: 18px 20px;
+        border-bottom: 1px solid #e5e7eb;
+        color: #1f2937;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0;
+    }
+
+    .detail-item {
+        padding: 18px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .detail-item span:first-child {
+            display: block;
+            margin-bottom: 6px;
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .detail-item strong {
+            color: #1f2937;
+            font-size: 14px;
+        }
+
+    .status-badge {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .active-status {
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    .passive-status {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    .description-area {
+        padding: 20px;
+    }
+
+        .description-area span {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .description-area p {
+            margin: 7px 0 0;
+            color: #4b5563;
+            font-size: 13px;
+        }
+
+    @@media (max-width: 750px) {
+
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .detail-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+</style>

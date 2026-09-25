@@ -1,0 +1,296 @@
+﻿@model UretimERP.Models.TedarikciDetayViewModel
+
+@{
+    ViewBag.Title = "Tedarikçi Detayı";
+}
+
+<div class="page-header">
+    <div>
+        <h2>Tedarikçi Detayı</h2>
+        <p>@Model.CariKod numaralı tedarikçinin cari bilgileri</p>
+    </div>
+
+    <a href="@Url.Action("Index", "Tedarikci")" class="back-button">
+        ← Tedarikçilere Dön
+    </a>
+</div>
+
+<div class="supplier-info-grid">
+
+    <div class="info-card">
+        <span>Cari Kod</span>
+        <strong>@Model.CariKod</strong>
+    </div>
+
+    <div class="info-card">
+        <span>Firma</span>
+        <strong>@Model.FirmaAdi</strong>
+    </div>
+
+    <div class="info-card">
+        <span>Yetkili</span>
+        <strong>@Model.YetkiliAdi</strong>
+    </div>
+
+    <div class="info-card">
+        <span>Telefon</span>
+        <strong>@Model.Telefon</strong>
+    </div>
+
+    <div class="info-card">
+        <span>E-posta</span>
+        <strong>@Model.Email</strong>
+    </div>
+
+    <div class="info-card">
+        <span>Durum</span>
+        <strong>@(Model.AktifMi ? "Aktif" : "Pasif")</strong>
+    </div>
+
+</div>
+
+<div class="supplier-summary">
+
+    <div class="summary-card">
+        <span>Satın Alma Siparişi</span>
+        <strong>@Model.SatinAlmaSayisi</strong>
+        <small>Tedarikçiye verilen sipariş sayısı</small>
+    </div>
+
+    <div class="summary-card">
+        <span>Toplam Borç</span>
+        <strong>@Model.ToplamBorc.ToString("N2")</strong>
+        <small>Tedarikçi borç kayıtları</small>
+    </div>
+
+    <div class="summary-card">
+        <span>Toplam Ödeme</span>
+        <strong>@Model.ToplamOdeme.ToString("N2")</strong>
+        <small>Tedarikçiye yapılan ödemeler</small>
+    </div>
+
+</div>
+<div class="supplier-purchases">
+
+    <div class="section-header">
+        <h3>Satın Alma Siparişleri</h3>
+        <p>Bu tedarikçiye verilen satın alma siparişleri</p>
+    </div>
+
+    <table class="supplier-purchases-table">
+        <thead>
+            <tr>
+                <th>Sipariş No</th>
+                <th>Sipariş Tarihi</th>
+                <th>Beklenen Teslim</th>
+                <th>Durum</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.SatinAlmalar != null && Model.SatinAlmalar.Any())
+            {
+                foreach (var satinAlma in Model.SatinAlmalar)
+                {
+                    <tr>
+                        <td>
+                            <strong>@satinAlma.SiparisNo</strong>
+                        </td>
+
+                        <td>
+                            @satinAlma.SiparisTarihi.ToString("dd.MM.yyyy")
+                        </td>
+
+                        <td>
+                            @(satinAlma.TerminTarihi.HasValue
+                                ? satinAlma.TerminTarihi.Value.ToString("dd.MM.yyyy")
+                                : "-")
+                        </td>
+
+                        <td>
+                            <span class="purchase-status">
+                                @satinAlma.Durum
+                            </span>
+                        </td>
+
+                        <td>
+                            <a href="@Url.Action("Detay", "SatinAlma",
+                                      new { id = satinAlma.SatinAlmaSiparisID })"
+                               class="purchase-detail-button">
+                                Detay →
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="empty-purchases">
+                        Bu tedarikçiye ait satın alma siparişi bulunmuyor.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+        .page-header h2 {
+            margin: 0 0 5px;
+            font-size: 24px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #87938c;
+            font-size: 12px;
+        }
+
+    .back-button {
+        padding: 9px 14px;
+        border: 1px solid #dce5df;
+        border-radius: 9px;
+        background: #fff;
+        color: #174d32;
+        text-decoration: none;
+        font-size: 12px;
+    }
+
+    .supplier-info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .info-card {
+        background: #fff;
+        border: 1px solid #edf1ee;
+        border-radius: 14px;
+        padding: 18px;
+        min-height: 75px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+        .info-card span,
+        .summary-card span {
+            color: #89958e;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .info-card strong {
+            font-size: 13px;
+        }
+
+    .supplier-summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .summary-card {
+        background: #fff;
+        border: 1px solid #edf1ee;
+        border-radius: 14px;
+        padding: 20px 18px;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .summary-card strong {
+            font-size: 22px;
+            margin-bottom: 7px;
+        }
+
+        .summary-card small {
+            color: #9aa59e;
+            font-size: 11px;
+        }
+
+    .supplier-purchases {
+        margin-top: 18px;
+        background: #fff;
+        border: 1px solid #edf1ee;
+        border-radius: 14px;
+        padding: 18px;
+    }
+
+    .section-header {
+        margin-bottom: 15px;
+    }
+
+        .section-header h3 {
+            margin: 0 0 4px;
+            font-size: 15px;
+        }
+
+        .section-header p {
+            margin: 0;
+            color: #929d97;
+            font-size: 11px;
+        }
+
+    .supplier-purchases-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .supplier-purchases-table th {
+            padding: 11px 10px;
+            text-align: left;
+            color: #7f8b84;
+            font-size: 10px;
+            font-weight: 600;
+            border-bottom: 1px solid #e8edea;
+        }
+
+        .supplier-purchases-table td {
+            padding: 13px 10px;
+            font-size: 11px;
+            border-bottom: 1px solid #edf1ee;
+        }
+
+    .purchase-status {
+        display: inline-block;
+        padding: 5px 9px;
+        background: #edf5f0;
+        color: #174d32;
+        border-radius: 20px;
+        font-size: 10px;
+    }
+
+    .purchase-detail-button {
+        display: inline-block;
+        padding: 7px 11px;
+        border: 1px solid #d8e3dc;
+        border-radius: 8px;
+        background: #f8fbf9;
+        color: #174d32;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+        .purchase-detail-button:hover {
+            background: #edf5f0;
+            color: #174d32;
+            text-decoration: none;
+        }
+
+    .empty-purchases {
+        text-align: center;
+        color: #929d97;
+        padding: 25px !important;
+    }
+</style>

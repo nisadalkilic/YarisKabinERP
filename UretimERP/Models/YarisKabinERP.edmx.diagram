@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b483380dc40d4c31a66fae0abbc09faf" Name="Diagram1" ZoomLevel="34">
+        <EntityTypeShape EntityType="YarisKabinERPModel.Bildirimler" Width="1.5" PointX="23.25" PointY="48" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Birimler" Width="1.5" PointX="0.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.DepoKategorileri" Width="1.5" PointX="6" PointY="46.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Depolar" Width="1.5" PointX="8.25" PointY="45.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.GenelGiderler" Width="1.5" PointX="3.25" PointY="27.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.IhtiyacSatinAlmaBaglantilari" Width="1.5" PointX="15.75" PointY="60.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.IhtiyacTalepDetaylari" Width="1.5" PointX="7.5" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.IhtiyacTalepleri" Width="1.5" PointX="18" PointY="53" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.IslemKayitlari" Width="1.5" PointX="23.25" PointY="59.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Kategoriler" Width="1.5" PointX="0.75" PointY="31.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Kullanicilar" Width="1.5" PointX="21" PointY="49.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.KullaniciRolleri" Width="1.5" PointX="26.25" PointY="50.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.MalKabulDetaylari" Width="1.5" PointX="10.5" PointY="54.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.MalKabulleri" Width="1.5" PointX="8.25" PointY="67.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.MusteriAlacaklari" Width="1.5" PointX="11.25" PointY="38.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Musteriler" Width="1.5" PointX="6" PointY="36.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.MusteriTahsilatlari" Width="1.5" PointX="8.25" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Operasyonlar" Width="1.5" PointX="18.75" PointY="49.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.ReceteDetaylari" Width="1.5" PointX="7.5" PointY="58.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Receteler" Width="1.5" PointX="7.5" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Roller" Width="1.5" PointX="24" PointY="44.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.RolYetkileri" Width="1.5" PointX="26.25" PointY="44.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.SatinAlmaDetaylari" Width="1.5" PointX="10.5" PointY="59.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.SatinAlmaSiparisleri" Width="1.5" PointX="8.25" PointY="62.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.SevkiyatDetaylari" Width="1.5" PointX="10.5" PointY="49.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Sevkiyatlar" Width="1.5" PointX="8.25" PointY="39" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.SiparisDetaylari" Width="1.5" PointX="13.5" PointY="54.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Siparisler" Width="1.5" PointX="6" PointY="41.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.SistemAyarlari" Width="1.5" PointX="6.375" PointY="27.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.StokHareketleri" Width="1.5" PointX="13.5" PointY="59.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Stoklar" Width="1.5" PointX="13.5" PointY="51" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.TedarikciBorclari" Width="1.5" PointX="16.5" PointY="48.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Tedarikciler" Width="1.5" PointX="11.25" PointY="44.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.TedarikciOdemeleri" Width="1.5" PointX="18.75" PointY="44.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.TedarikciUrunleri" Width="1.5" PointX="13.5" PointY="46.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UretimAlaniSorumlulari" Width="1.5" PointX="26.25" PointY="56.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UretimAlanlari" Width="1.5" PointX="13.5" PointY="64.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UretimEmirleri" Width="1.5" PointX="15.75" PointY="53.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UretimEmriOperasyonlari" Width="1.5" PointX="21" PointY="54.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UretimMaliyetleri" Width="1.5" PointX="18" PointY="61.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UretimMalzemeTuketimleri" Width="1.5" PointX="21" PointY="59.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UretimMamulGirisleri" Width="1.5" PointX="18" PointY="57.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UretimOperasyonKullanicilari" Width="1.5" PointX="23.25" PointY="55" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UrunCesitleri" Width="1.5" PointX="5.25" PointY="75.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Urunler" Width="1.5" PointX="3" PointY="32.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.UrunTipleri" Width="1.5" PointX="0.75" PointY="38.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="YarisKabinERPModel.Yetkiler" Width="1.5" PointX="24" PointY="41.25" IsExpanded="true" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Bildirimler_Kullanicilar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Urunler_Birimler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Depolar_DepoKategorileri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MalKabulDetaylari_Depolar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SevkiyatDetaylari_Depolar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_StokHareketleri_Depolar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Stoklar_Depolar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimMalzemeTuketimleri_Depolar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimMamulGirisleri_Depolar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_IhtiyacSatinAlma_IhtiyacTalepDetaylari" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_IhtiyacSatinAlma_SatinAlmaDetaylari" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_IhtiyacTalepDetaylari_IhtiyacTalepleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_IhtiyacTalepDetaylari_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_IhtiyacTalepDetaylari_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_IhtiyacTalepleri_UretimEmirleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_IslemKayitlari_Kullanicilar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Urunler_Kategoriler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_KullaniciRolleri_Kullanicilar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimAlaniSorumlulari_Kullanicilar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimOperasyonKullanicilari_Kullanicilar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_KullaniciRolleri_Roller" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MalKabulDetaylari_MalKabulleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MalKabulDetaylari_SatinAlmaDetaylari" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MalKabulDetaylari_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MalKabulDetaylari_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MalKabulleri_SatinAlmaSiparisleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MalKabulleri_Tedarikciler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MusteriAlacaklari_Musteriler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MusteriAlacaklari_Siparisler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MusteriTahsilatlari_Musteriler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Sevkiyatlar_Musteriler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Siparisler_Musteriler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_MusteriTahsilatlari_Siparisler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UEO_Operasyonlar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_ReceteDetaylari_MalzemeUrun" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_ReceteDetaylari_MalzemeUrunCesit" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_ReceteDetaylari_Receteler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Receteler_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Receteler_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimEmirleri_Receteler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_RolYetkileri_Roller" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_RolYetkileri_Yetkiler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SatinAlmaDetaylari_SatinAlmaSiparisleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SatinAlmaDetaylari_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SatinAlmaDetaylari_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SatinAlmaSiparisleri_Tedarikciler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_TedarikciBorclari_SatinAlmaSiparisleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SevkiyatDetaylari_Sevkiyatlar" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SevkiyatDetaylari_SiparisDetaylari" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SevkiyatDetaylari_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SevkiyatDetaylari_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Sevkiyatlar_Siparisler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SiparisDetaylari_Siparisler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SiparisDetaylari_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_SiparisDetaylari_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimEmirleri_SiparisDetaylari" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_StokHareketleri_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_StokHareketleri_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Stoklar_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Stoklar_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_TedarikciBorclari_Tedarikciler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_TedarikciOdemeleri_TedarikciBorclari" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_TedarikciOdemeleri_Tedarikciler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_TedarikciUrunleri_Tedarikciler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_TedarikciUrunleri_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_TedarikciUrunleri_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimAlaniSorumlulari_UretimAlanlari" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UEO_UretimAlanlari" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimEmirleri_UretimAlanlari" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UEO_UretimEmirleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimEmirleri_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimEmirleri_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimMaliyetleri_UretimEmirleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimMalzemeTuketimleri_UretimEmirleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimMamulGirisleri_UretimEmirleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimOperasyonKullanicilari_UEO" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimMalzemeTuketimleri_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimMalzemeTuketimleri_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimMamulGirisleri_UrunCesitleri" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UretimMamulGirisleri_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_UrunCesitleri_Urunler" ManuallyRouted="false" />
+        <AssociationConnector Association="YarisKabinERPModel.FK_Urunler_UrunTipleri" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

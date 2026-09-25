@@ -1,0 +1,389 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>@ViewBag.Title - YarışKabin ERP</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f7f5;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #1f2937;
+        }
+
+        .erp-page {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #ffffff;
+            border-right: 1px solid #e8ece8;
+            padding: 26px 16px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: #162a1d;
+            margin: 0 10px 35px;
+        }
+
+            .logo span {
+                color: #66c77a;
+            }
+
+        .menu-title {
+            font-size: 10px;
+            color: #a0a7a2;
+            text-transform: uppercase;
+            margin: 25px 12px 8px;
+            letter-spacing: 1px;
+        }
+
+        .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+            .menu li {
+                margin: 4px 0;
+            }
+
+            .menu a {
+                display: flex;
+                align-items: center;
+                gap: 11px;
+                padding: 11px 13px;
+                border-radius: 8px;
+                color: #68716b;
+                text-decoration: none;
+                font-size: 13px;
+                transition: .2s;
+            }
+
+                .menu a:hover {
+                    background: #f0f8f1;
+                    color: #183e25;
+                }
+
+                .menu a.active {
+                    background: #173c24;
+                    color: white;
+                    font-weight: 600;
+                }
+
+        .menu-icon {
+            width: 18px;
+            text-align: center;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topbar {
+            height: 76px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8ece8;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-name {
+            font-size: 17px;
+            font-weight: 700;
+            color: #202722;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            width: 220px;
+            height: 38px;
+            border: 1px solid #e1e6e2;
+            border-radius: 8px;
+            background: #fafbfa;
+            padding: 0 13px;
+            outline: none;
+            font-size: 12px;
+        }
+
+            .search-box:focus {
+                border-color: #82cf91;
+            }
+
+        .top-button {
+            border: 1px solid #e1e6e2;
+            background: white;
+            border-radius: 8px;
+            height: 38px;
+            padding: 0 13px;
+            font-size: 12px;
+            color: #59615b;
+        }
+
+        .user-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #d9f6df;
+            color: #205b30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .content {
+            padding: 28px;
+        }
+
+        .footer {
+            padding: 15px 28px 25px;
+            color: #a0a7a2;
+            font-size: 11px;
+        }
+
+        @@media (max-width: 900px) {
+            .sidebar {
+                width: 180px;
+            }
+
+            .search-box {
+                display: none;
+            }
+
+            .content {
+                padding: 18px;
+            }
+        }
+        .notification-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 10px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+            .notification-link:hover {
+                background: #f3f4f6;
+                color: #166534;
+                text-decoration: none;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div class="erp-page">
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                YarışKabin <span>ERP</span>
+            </div>
+
+            <div class="menu-title">Genel</div>
+
+            <ul class="menu">
+
+                <li>
+                    <a href="@Url.Action("Index", "Home")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Home" ? "active" : "")">
+                        <span class="menu-icon">▦</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "Urunler")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Urunler" ? "active" : "")">
+                        <span class="menu-icon">▫</span>
+                        Ürünler
+                    </a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("Index", "Stok")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Stok" ? "active" : "")">
+                        <span>▤</span>
+                        Stok & Depolar
+                    </a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("Index", "Siparis")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Siparis" ? "active" : "")">
+                        <span class="menu-icon">▣</span>
+                        Siparişler
+                    </a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("Index", "Uretim")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Uretim" ? "active" : "")">
+                        <span class="menu-icon">⚙</span>
+                        Üretim
+                    </a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("Index", "SatinAlma")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "SatinAlma" ? "active" : "")">
+                        <span class="menu-icon">▦</span>
+                        Satın Alma
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="menu-title">Cari</div>
+
+            <ul class="menu">
+
+                <li>
+                    <a href="@Url.Action("Index", "Musteri")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Musteri" ? "active" : "")">
+                        <span class="menu-icon">♙</span>
+                        Müşteriler
+                    </a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("Index", "Tedarikci")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Tedarikci" ? "active" : "")">
+                        <span class="menu-icon">♙</span>
+                        Tedarikçiler
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "Finans")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Finans" ? "active" : "")">
+                        <span class="menu-icon">₺</span>
+                        Finans
+                    </a>
+                </li>
+            </ul>
+
+            <div class="menu-title">Sistem</div>
+
+            <ul class="menu">
+
+                <li>
+                    <a href="@Url.Action("Index", "Raporlar")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Raporlar" ? "active" : "")">
+                        <span class="menu-icon">▥</span>
+                        Raporlar
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "Kullanici")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Kullanici" ? "active" : "")">
+                        <span class="menu-icon">♙</span>
+                        Kullanıcılar
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "Rol")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Rol" ? "active" : "")">
+                        <span class="menu-icon">◈</span>
+                        Rol & Yetkiler
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "IslemKaydi")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "IslemKaydi" ? "active" : "")">
+                        <span class="menu-icon">▤</span>
+                        İşlem Geçmişi
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "Ayarlar")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Ayarlar" ? "active" : "")">
+                        <span class="menu-icon">⚙</span>
+                        Ayarlar
+                    </a>
+                </li>
+
+            </ul>
+
+        </aside>
+
+        <main class="main">
+
+            <header class="topbar">
+
+                <div class="page-name">
+                    @ViewBag.Title
+                </div>
+
+                <div class="top-actions">
+
+                    <form action="@Url.Action("Index", "Arama")"
+                          method="get"
+                          class="top-search-form">
+
+                        <input class="search-box"
+                               type="text"
+                               name="q"
+                               placeholder="Ürün ara..."
+                               autocomplete="off" />
+
+                    </form> 
+
+                    <a href="@Url.Action("Index", "Bildirim")"
+                       class="notification-link">
+                        <span>Bildirimler</span>
+                    </a>
+                    
+                    <div class="user-circle">
+                        ERP
+                    </div>
+
+                </div>
+
+            </header>
+
+            <section class="content">
+                @RenderBody()
+            </section>
+
+            <footer class="footer">
+                © @DateTime.Now.Year YarışKabin ERP
+            </footer>
+
+        </main>
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
+

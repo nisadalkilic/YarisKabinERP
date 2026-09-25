@@ -1,0 +1,670 @@
+﻿@model UretimERP.Models.FinansOzetViewModel
+@using UretimERP.Models
+@{
+    ViewBag.Title = "Finans";
+}
+
+<div class="page-header">
+    <div>
+        <h2>Finans</h2>
+        <p>Alacak, tahsilat, borç, ödeme ve maliyetlerin genel görünümü.</p>
+    </div>
+</div>
+
+<div class="finance-grid">
+
+    <div class="finance-card">
+        <span>Toplam Müşteri Alacağı</span>
+        <h3>@Model.ToplamAlacak.ToString("N2")</h3>
+        <small>Alacaklar</small>
+    </div>
+
+    <div class="finance-card">
+        <span>Toplam Tahsilat</span>
+        <h3>@Model.ToplamTahsilat.ToString("N2")</h3>
+        <small>Müşterilerden alınan</small>
+    </div>
+
+    <div class="finance-card">
+        <span>Tedarikçi Borcu</span>
+        <h3>@Model.ToplamTedarikciBorcu.ToString("N2")</h3>
+        <small>Tedarikçilere borç</small>
+    </div>
+
+    <div class="finance-card">
+        <span>Tedarikçi Ödemesi</span>
+        <h3>@Model.ToplamTedarikciOdeme.ToString("N2")</h3>
+        <small>Yapılan ödemeler</small>
+    </div>
+
+    <div class="finance-card">
+        <span>Genel Giderler</span>
+        <h3>@Model.ToplamGenelGider.ToString("N2")</h3>
+        <small>İşletme giderleri</small>
+    </div>
+
+    <div class="finance-card">
+        <span>Üretim Maliyeti</span>
+        <h3>@Model.ToplamUretimMaliyeti.ToString("N2")</h3>
+        <small>Toplam üretim maliyeti</small>
+    </div>
+
+</div>
+
+<div class="finance-info">
+
+    <div>
+        <h3>Finansal Genel Bakış</h3>
+        <p>
+            Müşteri ve tedarikçi hareketleri ile işletme ve üretim
+            maliyetlerinin özet görünümü.
+        </p>
+    </div>
+
+    <div class="finance-summary">
+        <div>
+            <span>Alacak / Tahsilat</span>
+            <strong>
+                @Model.ToplamAlacak.ToString("N2") /
+                @Model.ToplamTahsilat.ToString("N2")
+            </strong>
+        </div>
+
+        <div>
+            <span>Borç / Ödeme</span>
+            <strong>
+                @Model.ToplamTedarikciBorcu.ToString("N2") /
+                @Model.ToplamTedarikciOdeme.ToString("N2")
+            </strong>
+        </div>
+    </div>
+
+</div>
+@{
+    var alacaklar = ViewBag.Alacaklar as List<MusteriAlacakListeViewModel>;
+    var borclar = ViewBag.Borclar as List<TedarikciBorcListeViewModel>;
+    var tahsilatlar = ViewBag.Tahsilatlar as List<MusteriTahsilatListeViewModel>;
+    var odemeler = ViewBag.Odemeler as List<TedarikciOdemeListeViewModel>;
+    var genelGiderler = ViewBag.GenelGiderler as List<GenelGiderListeViewModel>;
+    var uretimMaliyetleri = ViewBag.UretimMaliyetleri as List<UretimMaliyetListeViewModel>;
+}
+<div class="finance-table-card">
+
+    <div class="table-header">
+        <div>
+            <h3>Son Müşteri Alacakları</h3>
+            <p>Müşterilerden doğan son finansal alacak kayıtları.</p>
+        </div>
+    </div>
+
+    <table class="finance-table">
+        <thead>
+            <tr>
+                <th>Müşteri</th>
+                <th>Belge No</th>
+                <th>Alacak Tarihi</th>
+                <th>Vade Tarihi</th>
+                <th>Tutar</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (alacaklar != null && alacaklar.Any())
+            {
+                foreach (var alacak in alacaklar)
+                {
+                    <tr>
+                        <td>
+                            <strong>@alacak.MusteriAdi</strong>
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(alacak.BelgeNo)
+                                ? "-"
+                                : alacak.BelgeNo)
+                        </td>
+
+                        <td>
+                            @alacak.AlacakTarihi.ToString("dd.MM.yyyy")
+                        </td>
+
+                        <td>
+                            @(alacak.VadeTarihi.HasValue
+                                ? alacak.VadeTarihi.Value.ToString("dd.MM.yyyy")
+                                : "-")
+                        </td>
+
+                        <td>
+                            <strong>
+                                @alacak.Tutar.ToString("N2")
+                                @alacak.ParaBirimi
+                            </strong>
+                        </td>
+
+                        <td>
+                            <span class="finance-status">
+                                @alacak.Durum
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="empty-finance">
+                        Henüz müşteri alacağı bulunmuyor.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="finance-table-card">
+
+    <div class="table-header">
+        <div>
+            <h3>Son Tedarikçi Borçları</h3>
+            <p>Tedarikçilere ait son borç ve ödeme yükümlülükleri.</p>
+        </div>
+    </div>
+
+    <table class="finance-table">
+        <thead>
+            <tr>
+                <th>Tedarikçi</th>
+                <th>Belge No</th>
+                <th>Borç Tarihi</th>
+                <th>Vade Tarihi</th>
+                <th>Tutar</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (borclar != null && borclar.Any())
+            {
+                foreach (var borc in borclar)
+                {
+                    <tr>
+                        <td>
+                            <strong>@borc.TedarikciAdi</strong>
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(borc.BelgeNo)
+                                ? "-"
+                                : borc.BelgeNo)
+                        </td>
+
+                        <td>
+                            @borc.BorcTarihi.ToString("dd.MM.yyyy")
+                        </td>
+
+                        <td>
+                            @(borc.VadeTarihi.HasValue
+                                ? borc.VadeTarihi.Value.ToString("dd.MM.yyyy")
+                                : "-")
+                        </td>
+
+                        <td>
+                            <strong>
+                                @borc.Tutar.ToString("N2")
+                                @borc.ParaBirimi
+                            </strong>
+                        </td>
+
+                        <td>
+                            <span class="finance-status">
+                                @borc.Durum
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="empty-finance">
+                        Henüz tedarikçi borcu bulunmuyor.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="finance-table-card">
+
+    <div class="table-header">
+        <div>
+            <h3>Son Müşteri Tahsilatları</h3>
+            <p>Müşterilerden alınan son ödeme kayıtları.</p>
+        </div>
+    </div>
+
+    <table class="finance-table">
+        <thead>
+            <tr>
+                <th>Müşteri</th>
+                <th>Tahsilat Tarihi</th>
+                <th>Tutar</th>
+                <th>Ödeme Yöntemi</th>
+                <th>Açıklama</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (tahsilatlar != null && tahsilatlar.Any())
+            {
+                foreach (var tahsilat in tahsilatlar)
+                {
+                    <tr>
+                        <td>
+                            <strong>@tahsilat.MusteriAdi</strong>
+                        </td>
+
+                        <td>
+                            @tahsilat.TahsilatTarihi.ToString("dd.MM.yyyy")
+                        </td>
+
+                        <td>
+                            <strong>
+                                @tahsilat.Tutar.ToString("N2")
+                                @tahsilat.ParaBirimi
+                            </strong>
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(tahsilat.OdemeYontemi)
+                                ? "-"
+                                : tahsilat.OdemeYontemi)
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(tahsilat.Aciklama)
+                                ? "-"
+                                : tahsilat.Aciklama)
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="empty-finance">
+                        Henüz müşteri tahsilatı bulunmuyor.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="finance-table-card">
+
+    <div class="table-header">
+        <div>
+            <h3>Son Tedarikçi Ödemeleri</h3>
+            <p>Tedarikçilere yapılan son ödeme kayıtları.</p>
+        </div>
+    </div>
+
+    <table class="finance-table">
+        <thead>
+            <tr>
+                <th>Tedarikçi</th>
+                <th>Ödeme Tarihi</th>
+                <th>Belge No</th>
+                <th>Tutar</th>
+                <th>Ödeme Yöntemi</th>
+                <th>Açıklama</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (odemeler != null && odemeler.Any())
+            {
+                foreach (var odeme in odemeler)
+                {
+                    <tr>
+                        <td>
+                            <strong>@odeme.TedarikciAdi</strong>
+                        </td>
+
+                        <td>
+                            @odeme.OdemeTarihi.ToString("dd.MM.yyyy")
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(odeme.BelgeNo)
+                                ? "-"
+                                : odeme.BelgeNo)
+                        </td>
+
+                        <td>
+                            <strong>
+                                @odeme.Tutar.ToString("N2")
+                                @odeme.ParaBirimi
+                            </strong>
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(odeme.OdemeYontemi)
+                                ? "-"
+                                : odeme.OdemeYontemi)
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(odeme.Aciklama)
+                                ? "-"
+                                : odeme.Aciklama)
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" class="empty-finance">
+                        Henüz tedarikçi ödemesi bulunmuyor.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="finance-table-card">
+
+    <div class="table-header">
+        <div>
+            <h3>Son Genel Giderler</h3>
+            <p>İşletmenin son genel gider kayıtları.</p>
+        </div>
+    </div>
+
+    <table class="finance-table">
+        <thead>
+            <tr>
+                <th>Gider Türü</th>
+                <th>Gider Tarihi</th>
+                <th>Belge No</th>
+                <th>Tutar</th>
+                <th>Açıklama</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (genelGiderler != null && genelGiderler.Any())
+            {
+                foreach (var gider in genelGiderler)
+                {
+                    <tr>
+                        <td>
+                            <strong>@gider.GiderTuru</strong>
+                        </td>
+
+                        <td>
+                            @gider.GiderTarihi.ToString("dd.MM.yyyy")
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(gider.BelgeNo)
+                                ? "-"
+                                : gider.BelgeNo)
+                        </td>
+
+                        <td>
+                            <strong>
+                                @gider.Tutar.ToString("N2")
+                                @gider.ParaBirimi
+                            </strong>
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(gider.Aciklama)
+                                ? "-"
+                                : gider.Aciklama)
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="empty-finance">
+                        Henüz genel gider kaydı bulunmuyor.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="finance-table-card">
+
+    <div class="table-header">
+        <div>
+            <h3>Son Üretim Maliyetleri</h3>
+            <p>Üretim emirlerine ait son maliyet hesaplamaları.</p>
+        </div>
+    </div>
+
+    <table class="finance-table">
+        <thead>
+            <tr>
+                <th>Üretim Emri</th>
+                <th>Malzeme</th>
+                <th>İşçilik</th>
+                <th>Genel Üretim</th>
+                <th>Diğer</th>
+                <th>Toplam</th>
+                <th>Hesaplama Tarihi</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (uretimMaliyetleri != null && uretimMaliyetleri.Any())
+            {
+                foreach (var maliyet in uretimMaliyetleri)
+                {
+                    <tr>
+                        <td>
+                            <strong>@maliyet.UretimEmriNo</strong>
+                        </td>
+
+                        <td>
+                            @maliyet.MalzemeMaliyeti.ToString("N2")
+                        </td>
+
+                        <td>
+                            @maliyet.IscilikMaliyeti.ToString("N2")
+                        </td>
+
+                        <td>
+                            @maliyet.GenelUretimGideri.ToString("N2")
+                        </td>
+
+                        <td>
+                            @maliyet.DigerMaliyet.ToString("N2")
+                        </td>
+
+                        <td>
+                            <strong>
+                                @maliyet.ToplamMaliyet.ToString("N2")
+                            </strong>
+                        </td>
+
+                        <td>
+                            @maliyet.HesaplamaTarihi.ToString("dd.MM.yyyy")
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="empty-finance">
+                        Henüz üretim maliyeti kaydı bulunmuyor.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<style>
+    .page-header {
+        margin-bottom: 20px;
+    }
+
+        .page-header h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .page-header p {
+            margin: 5px 0 0;
+            font-size: 11px;
+            color: #8a928c;
+        }
+
+    .finance-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 18px;
+    }
+
+    .finance-card {
+        background: white;
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid #eef1ee;
+    }
+
+        .finance-card span {
+            display: block;
+            font-size: 10px;
+            color: #8a928c;
+            margin-bottom: 10px;
+        }
+
+        .finance-card h3 {
+            margin: 0 0 8px;
+            font-size: 21px;
+            color: #28332c;
+        }
+
+        .finance-card small {
+            font-size: 9px;
+            color: #9aa19c;
+        }
+
+    .finance-info {
+        background: white;
+        border-radius: 14px;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        border: 1px solid #eef1ee;
+    }
+
+        .finance-info h3 {
+            margin: 0 0 6px;
+            font-size: 14px;
+        }
+
+        .finance-info p {
+            margin: 0;
+            font-size: 10px;
+            color: #8a928c;
+        }
+
+    .finance-summary {
+        min-width: 300px;
+    }
+
+        .finance-summary div {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f2f0;
+        }
+
+        .finance-summary span {
+            font-size: 10px;
+            color: #8a928c;
+        }
+
+        .finance-summary strong {
+            font-size: 10px;
+            color: #3d5946;
+        }
+
+    .finance-table-card {
+        margin-top: 18px;
+        background: white;
+        border: 1px solid #eef1ee;
+        border-radius: 14px;
+        padding: 20px;
+        overflow-x: auto;
+    }
+
+    .table-header {
+        margin-bottom: 18px;
+    }
+
+        .table-header h3 {
+            margin: 0 0 5px;
+            font-size: 14px;
+            color: #28332c;
+        }
+
+        .table-header p {
+            margin: 0;
+            font-size: 10px;
+            color: #8a928c;
+        }
+
+    .finance-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .finance-table th {
+            text-align: left;
+            padding: 11px;
+            font-size: 10px;
+            color: #8a928c;
+            border-bottom: 1px solid #edf0ed;
+        }
+
+        .finance-table td {
+            padding: 13px 11px;
+            font-size: 10px;
+            color: #3f4942;
+            border-bottom: 1px solid #f0f2f0;
+        }
+
+    .finance-status {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        background: #edf7f0;
+        color: #356143;
+        font-size: 9px;
+        font-weight: 600;
+    }
+
+    .empty-finance {
+        text-align: center !important;
+        padding: 28px !important;
+        color: #929a94 !important;
+    }
+</style>
