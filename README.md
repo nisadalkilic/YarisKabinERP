@@ -48,34 +48,6 @@ The application was developed as part of my software development internship and 
 - Bootstrap
 - Git & GitHub
 
--## Project Modules
-
-- Product Management
-- Inventory and Warehouse Management
-- Customer Order Management
-- Production Management
-- Purchasing and Supplier Management
-- Goods Receipt Management
-- Customer Management
-- Supplier Management
-- Financial Management
-- Reporting and Dashboard
-- User Management
-- Role and Permission Management
-- Notification Management
-- Activity Log Management
-- System Settings
-
-- ## Architecture
-
-The project follows the ASP.NET MVC architecture and separates the application into Models, Views, and Controllers.
-
-- Model: Represents database entities and application data
-- View: Provides the user interface using Razor views
-- Controller: Handles user requests, application flow, and data operations
-- Entity Framework: Provides communication between the application and SQL Server
-- ViewModels: Transfer only the required data from controllers to views
-
 - ## Database
 
 The application uses Microsoft SQL Server as its relational database management system and Entity Framework 6 for data access.
