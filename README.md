@@ -164,15 +164,8 @@ Possible future improvements include:
 - Dynamic material requirement planning
 - Extended financial analysis
 
-- ## Application Screenshots
+## Application Screenshot
 
 ### Dashboard
-![ERP Dashboard](screenshots/Dashboard.png)
 
-### Financial Overview
-![Financial Overview](screenshots/Finance.png)
-
-### Reports
-![ERP Reports](screenshots/Reports.png)
-- Exportable reports
-
+![YarisKabin ERP Dashboard](screenshots/Dashboard.png)
