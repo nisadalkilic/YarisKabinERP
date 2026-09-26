@@ -10,7 +10,6 @@ A web-based ERP application designed to manage and monitor manufacturing operati
 ![Entity Framework](https://img.shields.io/badge/Entity_Framework-6-512BD4)
 ![SQL Server](https://img.shields.io/badge/SQL_Server-Database-CC2927)
 
-# YarisKabin ERP
 
 YarisKabin ERP is a manufacturing-oriented Enterprise Resource Planning (ERP) web application developed with ASP.NET MVC, C#, .NET Framework, Entity Framework, and SQL Server.
 
