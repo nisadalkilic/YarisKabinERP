@@ -163,6 +163,16 @@ Possible future improvements include:
 - Advanced production planning
 - Dynamic material requirement planning
 - Extended financial analysis
+
+- ## Application Screenshots
+
+### Dashboard
+![ERP Dashboard](screenshots/Dashboard.png)
+
+### Financial Overview
+![Financial Overview](screenshots/Finance.png)
+
+### Reports
+![ERP Reports](screenshots/Reports.png)
 - Exportable reports
-- Additional search capabilities
-- Deployment to a production environment
+
